@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daisy's Road to a High Paycheck</title>
+<title>Daisy's Road to Anthropic</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -28,540 +28,169 @@
     --border: rgba(74, 124, 89, 0.18);
     --shadow: rgba(26, 58, 42, 0.08);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(ellipse at 10% 20%, rgba(168,197,160,0.15) 0%, transparent 50%), radial-gradient(ellipse at 90% 80%, rgba(212,232,204,0.2) 0%, transparent 50%); pointer-events: none; z-index: 0; }
+  .page-wrap { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 0 1.5rem 4rem; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text-dark);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  .leaf-deco { position: fixed; pointer-events: none; opacity: 0.07; z-index: 0; }
+  .leaf-deco.tl { top: -20px; left: -30px; transform: rotate(25deg); }
+  .leaf-deco.br { bottom: 60px; right: -40px; transform: rotate(-20deg) scaleX(-1); }
 
-  /* Botanical background pattern */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      radial-gradient(ellipse at 10% 20%, rgba(168, 197, 160, 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 90% 80%, rgba(212, 232, 204, 0.2) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 50%, rgba(238, 245, 235, 0.3) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
+  .hero { text-align: center; padding: 3.5rem 0 2.5rem; position: relative; }
+  .hero-deco { display: flex; justify-content: center; gap: 8px; margin-bottom: 1.25rem; animation: fadeUp 0.8s ease both; }
+  .petal-ring { width: 64px; height: 64px; }
+  .petal-ring .petals { animation: spin-slow 20s linear infinite; transform-origin: center; }
+  @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem,5vw,3rem); font-weight: 600; color: var(--green-deep); line-height: 1.15; margin-bottom: 0.5rem; animation: fadeUp 0.8s 0.1s ease both; }
+  .hero h1 em { font-style: italic; color: var(--green-soft); }
+  .hero-sub { font-size: 14px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 300; margin-bottom: 1.5rem; animation: fadeUp 0.8s 0.2s ease both; }
+  .hero-tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: var(--text-mid); max-width: 400px; margin: 0 auto 2rem; line-height: 1.7; animation: fadeUp 0.8s 0.3s ease both; }
 
-  .page-wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 0 1.5rem 4rem;
-  }
+  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 2rem; animation: fadeUp 0.8s 0.4s ease both; }
+  @media (max-width: 520px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
+  .stat-card { background: var(--petal-white); border: 1px solid var(--border); border-radius: 16px; padding: 1rem; text-align: center; position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--shadow); }
+  .stat-card::before { content: ''; position: absolute; bottom: -8px; right: -8px; width: 40px; height: 40px; background: var(--green-fog); border-radius: 50%; opacity: 0.6; }
+  .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+  .stat-val { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--green-deep); font-weight: 600; }
 
-  /* ── HERO ── */
-  .hero {
-    text-align: center;
-    padding: 3.5rem 0 2.5rem;
-    position: relative;
-  }
+  .overall-progress { background: var(--petal-white); border: 1px solid var(--border); border-radius: 20px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; animation: fadeUp 0.8s 0.5s ease both; }
+  .progress-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .progress-label span:first-child { font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); font-weight: 500; }
+  .progress-label span:last-child { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--green-soft); }
+  .prog-track { height: 8px; background: var(--green-fog); border-radius: 99px; overflow: hidden; position: relative; }
+  .prog-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--green-soft), var(--green-mist)); transition: width 0.6s cubic-bezier(0.4,0,0.2,1); position: relative; }
+  .prog-fill::after { content: ''; position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; background: var(--daisy-yellow); border: 2px solid white; border-radius: 50%; box-shadow: 0 0 0 3px rgba(245,200,66,0.3); }
 
-  .hero-deco {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 1.25rem;
-    animation: fadeUp 0.8s ease both;
-  }
-
-  .petal-ring {
-    width: 64px;
-    height: 64px;
-  }
-
-  @keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .petal-ring .petals {
-    animation: spin-slow 20s linear infinite;
-    transform-origin: center;
-  }
-
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 600;
-    color: var(--green-deep);
-    line-height: 1.15;
-    margin-bottom: 0.5rem;
-    animation: fadeUp 0.8s 0.1s ease both;
-  }
-
-  .hero h1 em {
-    font-style: italic;
-    color: var(--green-soft);
-  }
-
-  .hero-sub {
-    font-size: 14px;
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 300;
-    margin-bottom: 1.5rem;
-    animation: fadeUp 0.8s 0.2s ease both;
-  }
-
-  .hero-tagline {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 15px;
-    color: var(--text-mid);
-    max-width: 400px;
-    margin: 0 auto 2rem;
-    line-height: 1.7;
-    animation: fadeUp 0.8s 0.3s ease both;
-  }
-
-  /* ── STATS ── */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 2rem;
-    animation: fadeUp 0.8s 0.4s ease both;
-  }
-
-  @media (max-width: 520px) {
-    .stats-row { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  .stat-card {
-    background: var(--petal-white);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px var(--shadow);
-  }
-
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    right: -8px;
-    width: 40px;
-    height: 40px;
-    background: var(--green-fog);
-    border-radius: 50%;
-    opacity: 0.6;
-  }
-
-  .stat-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-    font-weight: 500;
-  }
-
-  .stat-val {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    color: var(--green-deep);
-    font-weight: 600;
-  }
-
-  /* ── OVERALL PROGRESS ── */
-  .overall-progress {
-    background: var(--petal-white);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 2rem;
-    animation: fadeUp 0.8s 0.5s ease both;
-  }
-
-  .progress-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .progress-label span:first-child {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
-
-  .progress-label span:last-child {
-    font-family: 'Playfair Display', serif;
-    font-size: 15px;
-    color: var(--green-soft);
-  }
-
-  .prog-track {
-    height: 8px;
-    background: var(--green-fog);
-    border-radius: 99px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .prog-fill {
-    height: 100%;
-    border-radius: 99px;
-    background: linear-gradient(90deg, var(--green-soft), var(--green-mist));
-    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-  }
-
-  .prog-fill::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    background: var(--daisy-yellow);
-    border: 2px solid white;
-    border-radius: 50%;
-    box-shadow: 0 0 0 3px rgba(245, 200, 66, 0.3);
-  }
-
-  /* ── PHASE CARDS ── */
-  .phase-card {
-    background: var(--petal-white);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    margin-bottom: 1rem;
-    overflow: hidden;
-    transition: box-shadow 0.2s;
-    animation: fadeUp 0.7s ease both;
-  }
-
-  .phase-card:hover {
-    box-shadow: 0 6px 20px var(--shadow);
-  }
-
-  .phase-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 1.1rem 1.5rem;
-    cursor: pointer;
-    user-select: none;
-    position: relative;
-  }
-
-  .phase-header:hover {
-    background: var(--green-fog);
-  }
-
-  .phase-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
+  .phase-card { background: var(--petal-white); border: 1px solid var(--border); border-radius: 20px; margin-bottom: 1rem; overflow: hidden; transition: box-shadow 0.2s; animation: fadeUp 0.7s ease both; }
+  .phase-card:hover { box-shadow: 0 6px 20px var(--shadow); }
+  .phase-header { display: flex; align-items: center; gap: 12px; padding: 1.1rem 1.5rem; cursor: pointer; user-select: none; }
+  .phase-header:hover { background: var(--green-fog); }
+  .phase-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
   .phase-meta { flex: 1; min-width: 0; }
-
-  .phase-badge {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 500;
-    margin-bottom: 2px;
-  }
-
-  .phase-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 15px;
-    color: var(--green-deep);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .phase-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-  }
-
-  .phase-count {
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  .phase-mini-bar {
-    width: 60px;
-    height: 4px;
-    background: var(--green-fog);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-
-  .phase-mini-fill {
-    height: 100%;
-    border-radius: 99px;
-    transition: width 0.5s ease;
-  }
-
-  .chevron {
-    font-size: 14px;
-    color: var(--text-muted);
-    transition: transform 0.25s;
-  }
-
-  .phase-body {
-    border-top: 1px solid var(--border);
-    padding: 1.25rem 1.5rem 1.5rem;
-    display: none;
-  }
-
+  .phase-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; margin-bottom: 2px; }
+  .phase-title { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--green-deep); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .phase-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .phase-count { font-size: 12px; color: var(--text-muted); }
+  .phase-mini-bar { width: 60px; height: 4px; background: var(--green-fog); border-radius: 99px; overflow: hidden; }
+  .phase-mini-fill { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
+  .chevron { font-size: 14px; color: var(--text-muted); transition: transform 0.25s; }
+  .phase-body { border-top: 1px solid var(--border); padding: 1.25rem 1.5rem 1.5rem; display: none; }
   .phase-body.open { display: block; }
 
-  /* ── SECTIONS ── */
-  .section-head {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 1.25rem 0 0.6rem;
-  }
-
+  .section-head { display: flex; align-items: center; gap: 8px; margin: 1.25rem 0 0.6rem; }
   .section-head:first-child { margin-top: 0; }
+  .section-head span { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 500; }
+  .section-head::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  .section-head span {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
-
-  .section-head::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* ── CHECK ITEMS ── */
-  .check-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 8px 10px;
-    border-radius: 10px;
-    transition: background 0.15s;
-    cursor: pointer;
-  }
-
+  .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: 10px; transition: background 0.15s; }
   .check-item:hover { background: var(--green-fog); }
+  .check-item input[type=checkbox] { appearance: none; width: 17px; height: 17px; border: 1.5px solid var(--green-mist); border-radius: 5px; margin-top: 2px; flex-shrink: 0; cursor: pointer; position: relative; transition: all 0.2s; background: white; }
+  .check-item input[type=checkbox]:checked { background: var(--green-soft); border-color: var(--green-soft); }
+  .check-item input[type=checkbox]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg); }
+  .check-text { flex: 1; cursor: pointer; }
+  .check-main { font-size: 13px; color: var(--text-dark); line-height: 1.5; font-weight: 400; transition: color 0.2s; }
+  .check-main.done { color: var(--text-muted); text-decoration: line-through; }
+  .check-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; line-height: 1.5; }
+  .open-panel-btn { margin-left: auto; flex-shrink: 0; background: none; border: 1px solid var(--border); border-radius: 8px; padding: 3px 9px; font-size: 11px; color: var(--text-muted); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; white-space: nowrap; }
+  .open-panel-btn:hover { background: var(--green-fog); color: var(--green-soft); border-color: var(--green-soft); }
 
-  .check-item input[type=checkbox] {
-    appearance: none;
-    width: 17px;
-    height: 17px;
-    border: 1.5px solid var(--green-mist);
-    border-radius: 5px;
-    margin-top: 1px;
-    flex-shrink: 0;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.2s;
-    background: white;
-  }
+  .task-progress { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
+  .task-prog-bar { flex: 1; height: 3px; background: var(--green-fog); border-radius: 99px; overflow: hidden; max-width: 60px; }
+  .task-prog-fill { height: 100%; border-radius: 99px; background: var(--green-soft); transition: width 0.4s; }
+  .task-prog-label { font-size: 10px; color: var(--text-muted); }
 
-  .check-item input[type=checkbox]:checked {
-    background: var(--green-soft);
-    border-color: var(--green-soft);
-  }
-
-  .check-item input[type=checkbox]:checked::after {
-    content: '';
-    position: absolute;
-    left: 4px;
-    top: 1px;
-    width: 5px;
-    height: 9px;
-    border: 2px solid white;
-    border-top: none;
-    border-left: none;
-    transform: rotate(45deg);
-  }
-
-  .check-text { flex: 1; }
-
-  .check-main {
-    font-size: 13px;
-    color: var(--text-dark);
-    line-height: 1.5;
-    font-weight: 400;
-    transition: color 0.2s;
-  }
-
-  .check-main.done {
-    color: var(--text-muted);
-    text-decoration: line-through;
-  }
-
-  .check-sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 1px;
-    line-height: 1.5;
-  }
-
-  /* ── NOTES ── */
   .notes-wrap { margin-top: 1.25rem; }
+  .notes-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 500; margin-bottom: 6px; }
+  textarea.notes { width: 100%; min-height: 72px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--green-fog); color: var(--text-dark); font-family: 'DM Sans', sans-serif; font-size: 13px; resize: vertical; transition: border-color 0.2s, box-shadow 0.2s; outline: none; line-height: 1.6; }
+  textarea.notes:focus { border-color: var(--green-soft); box-shadow: 0 0 0 3px rgba(74,124,89,0.1); }
+  .notes-footer { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+  .save-btn { font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--green-soft); color: var(--green-soft); background: transparent; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+  .save-btn:hover { background: var(--green-soft); color: white; }
+  .saved-hint { font-size: 11px; color: var(--green-soft); opacity: 0; transition: opacity 0.3s; }
 
-  .notes-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    font-weight: 500;
-    margin-bottom: 6px;
-  }
+  .footer { text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .footer p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: var(--text-muted); }
 
-  textarea.notes {
-    width: 100%;
-    min-height: 72px;
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--green-fog);
-    color: var(--text-dark);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    resize: vertical;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
-    line-height: 1.6;
-  }
-
-  textarea.notes:focus {
-    border-color: var(--green-soft);
-    box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
-  }
-
-  .notes-footer {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 8px;
-  }
-
-  .save-btn {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    padding: 5px 14px;
-    border-radius: 99px;
-    border: 1px solid var(--green-soft);
-    color: var(--green-soft);
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-weight: 500;
-  }
-
-  .save-btn:hover {
-    background: var(--green-soft);
-    color: white;
-  }
-
-  .saved-hint {
-    font-size: 11px;
-    color: var(--green-soft);
-    opacity: 0;
-    transition: opacity 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  /* ── FOOTER ── */
-  .footer {
-    text-align: center;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .footer-flower {
-    margin-bottom: 0.75rem;
-  }
-
-  .footer p {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 14px;
-    color: var(--text-muted);
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   .phase-card:nth-child(1) { animation-delay: 0.1s; }
   .phase-card:nth-child(2) { animation-delay: 0.2s; }
   .phase-card:nth-child(3) { animation-delay: 0.3s; }
   .phase-card:nth-child(4) { animation-delay: 0.4s; }
 
-  /* ── LEAF DECO ── */
-  .leaf-deco {
-    position: fixed;
-    pointer-events: none;
-    opacity: 0.07;
-    z-index: 0;
-  }
+  /* ── PANEL OVERLAY ── */
+  .overlay { position: fixed; inset: 0; background: rgba(26,46,30,0.45); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .overlay.active { opacity: 1; pointer-events: all; }
 
-  .leaf-deco.tl { top: -20px; left: -30px; transform: rotate(25deg); }
-  .leaf-deco.br { bottom: 60px; right: -40px; transform: rotate(-20deg) scaleX(-1); }
+  .side-panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(480px, 100vw); background: var(--cream); z-index: 101; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; display: flex; flex-direction: column; }
+  .side-panel.active { transform: translateX(0); }
+
+  .panel-header { padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--cream); z-index: 2; }
+  .panel-close { position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: 1px solid var(--border); border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 16px; color: var(--text-muted); display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .panel-close:hover { background: var(--green-fog); color: var(--green-deep); }
+  .panel-phase-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; margin-bottom: 6px; }
+  .panel-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--green-deep); line-height: 1.3; margin-bottom: 4px; padding-right: 2rem; }
+  .panel-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 6px; }
+
+  .panel-progress-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .panel-prog-track { flex: 1; height: 6px; background: var(--green-fog); border-radius: 99px; overflow: hidden; }
+  .panel-prog-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--green-soft), var(--green-mist)); transition: width 0.4s; }
+  .panel-prog-label { font-size: 12px; color: var(--green-soft); font-weight: 500; white-space: nowrap; }
+
+  .panel-body { padding: 1.25rem 1.5rem 2rem; flex: 1; }
+  .panel-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 500; margin: 1.5rem 0 0.75rem; display: flex; align-items: center; gap: 8px; }
+  .panel-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .panel-section-label:first-child { margin-top: 0; }
+
+  .step-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 12px; transition: background 0.15s; margin-bottom: 4px; }
+  .step-item:hover { background: var(--green-fog); }
+  .step-item input[type=checkbox] { appearance: none; width: 18px; height: 18px; border: 1.5px solid var(--green-mist); border-radius: 6px; margin-top: 1px; flex-shrink: 0; cursor: pointer; position: relative; transition: all 0.2s; background: white; }
+  .step-item input[type=checkbox]:checked { background: var(--green-soft); border-color: var(--green-soft); }
+  .step-item input[type=checkbox]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 6px; height: 10px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg); }
+  .step-text { flex: 1; }
+  .step-main { font-size: 13px; color: var(--text-dark); line-height: 1.55; font-weight: 400; }
+  .step-main.done { color: var(--text-muted); text-decoration: line-through; }
+  .step-hint { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
+
+  .panel-resource { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 6px; font-size: 12px; color: var(--text-mid); background: var(--petal-white); text-decoration: none; transition: all 0.15s; }
+  .panel-resource:hover { background: var(--green-fog); border-color: var(--green-soft); color: var(--green-deep); }
+  .panel-resource span { font-size: 14px; }
+
+  .panel-main-check { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--green-fog); border-radius: 12px; margin-top: 1.5rem; cursor: pointer; border: 1px solid var(--border); transition: background 0.15s; }
+  .panel-main-check:hover { background: var(--green-pale); }
+  .panel-main-check input[type=checkbox] { appearance: none; width: 20px; height: 20px; border: 2px solid var(--green-mist); border-radius: 6px; flex-shrink: 0; cursor: pointer; position: relative; transition: all 0.2s; background: white; }
+  .panel-main-check input[type=checkbox]:checked { background: var(--green-soft); border-color: var(--green-soft); }
+  .panel-main-check input[type=checkbox]:checked::after { content: ''; position: absolute; left: 5px; top: 2px; width: 6px; height: 10px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg); }
+  .panel-main-check-label { font-size: 13px; font-weight: 500; color: var(--green-deep); }
 </style>
 </head>
 <body>
 
-<!-- Decorative leaves -->
 <svg class="leaf-deco tl" width="220" height="220" viewBox="0 0 220 220">
   <path d="M20 200 Q60 40 200 20 Q180 100 120 140 Q80 165 20 200Z" fill="#2d5a3d"/>
   <path d="M20 200 Q110 110 200 20" stroke="#2d5a3d" stroke-width="2" fill="none"/>
-  <path d="M20 200 Q80 120 160 60" stroke="#2d5a3d" stroke-width="1" fill="none" opacity="0.5"/>
-  <path d="M20 200 Q60 130 120 90" stroke="#2d5a3d" stroke-width="1" fill="none" opacity="0.5"/>
 </svg>
 <svg class="leaf-deco br" width="280" height="280" viewBox="0 0 280 280">
   <path d="M20 260 Q80 40 260 20 Q230 120 155 170 Q100 205 20 260Z" fill="#2d5a3d"/>
-  <path d="M20 260 Q140 130 260 20" stroke="#2d5a3d" stroke-width="2" fill="none"/>
 </svg>
 
-<div class="page-wrap">
+<div class="overlay" id="overlay" onclick="closePanel()"></div>
+<div class="side-panel" id="side-panel">
+  <div class="panel-header">
+    <button class="panel-close" onclick="closePanel()">✕</button>
+    <div class="panel-phase-badge" id="panel-phase-badge"></div>
+    <div class="panel-title" id="panel-title"></div>
+    <div class="panel-desc" id="panel-desc"></div>
+    <div class="panel-progress-row">
+      <div class="panel-prog-track"><div class="panel-prog-fill" id="panel-prog-fill" style="width:0%"></div></div>
+      <span class="panel-prog-label" id="panel-prog-label">0 / 0 steps</span>
+    </div>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</div>
 
-  <!-- HERO -->
+<div class="page-wrap">
   <header class="hero">
     <div class="hero-deco">
       <svg class="petal-ring" viewBox="0 0 64 64">
@@ -579,48 +208,30 @@
         <circle cx="32" cy="32" r="5" fill="#f5c842"/>
       </svg>
     </div>
-    <h1>Daisy's <em>Road to</em> Success</h1>
-    <p class="hero-sub">Software Engineer</p>
-    <p class="hero-tagline">"Great things ahead."</p>
+    <h1>Daisy's <em>Road to</em> Anthropic</h1>
+    <p class="hero-sub">Software Engineer — Account Abuse &amp; Trust &amp; Safety</p>
+    <p class="hero-tagline">"Every flower blooms in its own time. Every skill builds toward something greater."</p>
   </header>
 
-  <!-- STATS -->
-  <div class="stats-row" id="stats-row">
-    <div class="stat-card">
-      <div class="stat-label">Tasks done</div>
-      <div class="stat-val" id="stat-done">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Total tasks</div>
-      <div class="stat-val" id="stat-total">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Progress</div>
-      <div class="stat-val" id="stat-pct">0%</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Current phase</div>
-      <div class="stat-val" id="stat-phase" style="font-size:14px;margin-top:4px;">—</div>
-    </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-label">Tasks done</div><div class="stat-val" id="stat-done">0</div></div>
+    <div class="stat-card"><div class="stat-label">Total tasks</div><div class="stat-val" id="stat-total">0</div></div>
+    <div class="stat-card"><div class="stat-label">Progress</div><div class="stat-val" id="stat-pct">0%</div></div>
+    <div class="stat-card"><div class="stat-label">Current phase</div><div class="stat-val" id="stat-phase" style="font-size:14px;margin-top:4px;">—</div></div>
   </div>
 
-  <!-- OVERALL BAR -->
   <div class="overall-progress">
     <div class="progress-label">
       <span>Overall growth</span>
       <span id="prog-label-pct">0% in bloom</span>
     </div>
-    <div class="prog-track">
-      <div class="prog-fill" id="overall-fill" style="width:0%"></div>
-    </div>
+    <div class="prog-track"><div class="prog-fill" id="overall-fill" style="width:0%"></div></div>
   </div>
 
-  <!-- PHASES -->
   <div id="phases"></div>
 
-  <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-flower">
+    <div style="margin-bottom:0.75rem">
       <svg width="28" height="28" viewBox="0 0 28 28">
         <g transform="translate(14,14)">
           <ellipse cx="0" cy="-7" rx="3" ry="5.5" fill="#a8c5a0"/>
@@ -635,17 +246,444 @@
     </div>
     <p>Tended with care — one petal at a time.</p>
   </footer>
-
 </div>
 
 <script>
+const TASK_DETAILS = {
+  s1: {
+    desc: "Pandas and NumPy are your bread and butter for data analysis. Every abuse detection system starts with data wrangling.",
+    steps: [
+      { id: 'st-s1-1', text: 'Install Python environment with Anaconda or pyenv', hint: 'Use pyenv if you want clean version management' },
+      { id: 'st-s1-2', text: 'Complete Kaggle\'s free Pandas course', hint: 'kaggle.com/learn/pandas — takes about 4 hours' },
+      { id: 'st-s1-3', text: 'Work through NumPy basics (arrays, slicing, broadcasting)', hint: 'numpy.org/learn has a great quickstart' },
+      { id: 'st-s1-4', text: 'Load a real CSV dataset and compute group statistics with groupby()', hint: 'Try the NYC 311 dataset from data.cityofnewyork.us' },
+      { id: 'st-s1-5', text: 'Build one complete end-to-end data analysis notebook', hint: 'Question → data load → clean → analyze → visualize → conclusion' },
+    ],
+    resources: [
+      { label: 'Kaggle Pandas course (free)', url: 'https://www.kaggle.com/learn/pandas' },
+      { label: 'NYC Open Data portal', url: 'https://opendata.cityofnewyork.us' },
+    ]
+  },
+  s2: {
+    desc: "SQL is the language of data. Window functions and CTEs are what separate junior analysts from engineers who can actually diagnose abuse at scale.",
+    steps: [
+      { id: 'st-s2-1', text: 'Review basic SQL: SELECT, WHERE, GROUP BY, JOIN', hint: 'Skip if you already know these — just a refresher checkpoint' },
+      { id: 'st-s2-2', text: 'Learn CTEs (WITH clauses) and practice writing multi-step queries', hint: 'Think of CTEs as named subqueries that make complex logic readable' },
+      { id: 'st-s2-3', text: 'Master window functions: ROW_NUMBER, RANK, LAG, LEAD, SUM OVER', hint: 'These are essential for detecting patterns over time in user behavior' },
+      { id: 'st-s2-4', text: 'Complete 20 LeetCode SQL problems (medium difficulty)', hint: 'Focus on problems tagged "database" — sort by acceptance rate' },
+      { id: 'st-s2-5', text: 'Write a query that detects suspicious behavior in a dataset', hint: 'e.g. users who perform the same action more than 10x in an hour' },
+    ],
+    resources: [
+      { label: 'Mode SQL tutorial', url: 'https://mode.com/sql-tutorial' },
+      { label: 'LeetCode SQL problems', url: 'https://leetcode.com/problemset/database' },
+    ]
+  },
+  s3: {
+    desc: "Good Git habits signal seniority. Messy commit history and no PRs signal someone who codes alone. Practice like you're on a team from day one.",
+    steps: [
+      { id: 'st-s3-1', text: 'Set up a consistent branching strategy for your projects', hint: 'Use feature branches: git checkout -b feature/reddit-bot-detector' },
+      { id: 'st-s3-2', text: 'Write meaningful commit messages (not just "fix" or "update")', hint: 'Format: [type]: short description — e.g. "feat: add rate-limit detection"' },
+      { id: 'st-s3-3', text: 'Open a PR on one of your own repos and write a real PR description', hint: 'Describe what changed, why, and how to test it — practice for real teams' },
+      { id: 'st-s3-4', text: 'Learn git rebase and how to resolve merge conflicts', hint: 'git rebase -i HEAD~3 to squash commits before merging' },
+      { id: 'st-s3-5', text: 'Add a .gitignore and README to every project repo', hint: 'README = first impression. gitignore = don\'t commit secrets or venvs' },
+    ],
+    resources: [
+      { label: 'Conventional Commits spec', url: 'https://www.conventionalcommits.org' },
+      { label: 'Oh My Git! (interactive game)', url: 'https://ohmygit.org' },
+    ]
+  },
+  s4: {
+    desc: "REST APIs are how almost every abuse signal gets ingested or served. You need to be comfortable both consuming and building them.",
+    steps: [
+      { id: 'st-s4-1', text: 'Learn HTTP fundamentals: methods, status codes, headers, auth', hint: 'Focus on GET/POST/PUT/DELETE, 2xx/4xx/5xx codes, Bearer tokens' },
+      { id: 'st-s4-2', text: 'Use the requests library to hit a real public API', hint: 'Try the Reddit API or GitHub API — both have good free tiers' },
+      { id: 'st-s4-3', text: 'Build a small Flask or FastAPI app with 3+ endpoints', hint: 'FastAPI is more modern and gives you auto-docs — recommended' },
+      { id: 'st-s4-4', text: 'Add API key authentication to your app', hint: 'Check the key from an environment variable, not hardcoded' },
+      { id: 'st-s4-5', text: 'Document your API with a README showing example requests/responses', hint: 'This becomes your portfolio piece — treat it like a real product' },
+    ],
+    resources: [
+      { label: 'FastAPI documentation', url: 'https://fastapi.tiangolo.com' },
+      { label: 'Reddit API docs', url: 'https://www.reddit.com/dev/api' },
+    ]
+  },
+  pr1: {
+    desc: "Your first real abuse-adjacent project. You'll pull real NYC data, find statistical outliers, and build a dashboard — the core loop of any fraud/abuse analyst's toolkit.",
+    steps: [
+      { id: 'st-pr1-1', text: 'Download the NYC 311 Service Requests dataset from NYC Open Data', hint: 'data.cityofnewyork.us — filter to last 12 months to keep it manageable' },
+      { id: 'st-pr1-2', text: 'Load and explore the data in a Jupyter notebook', hint: 'Check for nulls, understand the columns, look at value distributions' },
+      { id: 'st-pr1-3', text: 'Define what "anomaly" means for this dataset', hint: 'e.g. unusual spike in complaints for a borough, or a new complaint type appearing' },
+      { id: 'st-pr1-4', text: 'Implement a simple anomaly detection method (z-score or IQR)', hint: 'Flag any data point more than 2 standard deviations from the mean' },
+      { id: 'st-pr1-5', text: 'Build a visualization showing normal vs anomalous periods', hint: 'Use matplotlib or plotly — a time series with highlighted anomalies' },
+      { id: 'st-pr1-6', text: 'Write a README and push to its own GitHub repo', hint: 'Include: what it does, how to run it, one screenshot of the output' },
+    ],
+    resources: [
+      { label: 'NYC Open Data', url: 'https://opendata.cityofnewyork.us' },
+      { label: 'Plotly for Python charts', url: 'https://plotly.com/python' },
+    ]
+  },
+  pr2: {
+    desc: "This is your first real abuse-thinking project. You'll analyze behavioral signals to detect coordinated inauthentic accounts — exactly what trust & safety engineers do.",
+    steps: [
+      { id: 'st-pr2-1', text: 'Register a Reddit app and get API credentials (PRAW)', hint: 'reddit.com/prefs/apps — create a "script" type app, it\'s free' },
+      { id: 'st-pr2-2', text: 'Pull 500+ comments from a large subreddit using PRAW', hint: 'Try r/worldnews or r/technology — high volume, varied accounts' },
+      { id: 'st-pr2-3', text: 'Engineer behavioral features per account', hint: 'Post frequency, karma ratio, account age, avg comment length, time-of-day patterns' },
+      { id: 'st-pr2-4', text: 'Define heuristic rules for "suspicious" accounts', hint: 'e.g. account < 30 days old AND posts > 20/day AND karma < 100' },
+      { id: 'st-pr2-5', text: 'Flag and review the top 20 most suspicious accounts manually', hint: 'Do they look like bots? This builds your adversarial intuition' },
+      { id: 'st-pr2-6', text: 'Write up findings and push to GitHub with a clear README', hint: 'Describe your features, rules, and what you found — great portfolio piece' },
+    ],
+    resources: [
+      { label: 'PRAW (Python Reddit API)', url: 'https://praw.readthedocs.io' },
+      { label: 'Reddit API docs', url: 'https://www.reddit.com/dev/api' },
+    ]
+  },
+  n1: {
+    desc: "PyData NYC is where data engineers, analysts, and scientists in NYC gather. Great for meeting people who work on data-heavy problems similar to abuse detection.",
+    steps: [
+      { id: 'st-n1-1', text: 'Sign up for the PyData NYC Meetup group', hint: 'meetup.com/PyDataNYC — events are free' },
+      { id: 'st-n1-2', text: 'Attend your first event', hint: 'Introduce yourself to at least 2 people — even just "I\'m a new grad at Broadridge working on data projects"' },
+      { id: 'st-n1-3', text: 'Connect with people you meet on LinkedIn afterward', hint: 'Send a short message: "Great meeting you at PyData last night!"' },
+    ],
+    resources: [
+      { label: 'PyData NYC Meetup', url: 'https://www.meetup.com/PyDataNYC' },
+    ]
+  },
+  n2: {
+    desc: "LinkedIn is how trust & safety engineers find each other and how recruiters find you. Set it up properly now so it compounds over time.",
+    steps: [
+      { id: 'st-n2-1', text: 'Update your LinkedIn headline to reflect your direction', hint: 'e.g. "Software Engineer @ Broadridge | Building toward trust & safety engineering"' },
+      { id: 'st-n2-2', text: 'Follow 10 trust & safety / fraud engineers and engage with their posts', hint: 'Search "trust and safety engineer" on LinkedIn — comment thoughtfully, not just "great post"' },
+      { id: 'st-n2-3', text: 'Add your first personal project to LinkedIn once it\'s on GitHub', hint: 'Use the "Projects" section — link to the repo and describe what you built' },
+      { id: 'st-n2-4', text: 'Connect with 5 people who work at companies with abuse teams', hint: 'Stripe, Coinbase, Meta, Google — even a warm connection helps later' },
+    ],
+    resources: [
+      { label: 'Trust & Safety Professionals on LinkedIn', url: 'https://www.linkedin.com/search/results/people/?keywords=trust%20and%20safety%20engineer' },
+    ]
+  },
+  s5: {
+    desc: "Machine learning is the backbone of modern fraud detection. You don't need to be an ML researcher — you need to know enough to build and deploy classifiers and understand their tradeoffs.",
+    steps: [
+      { id: 'st-s5-1', text: 'Understand the core ML workflow: data → features → model → evaluate', hint: 'The "shape" of ML problems matters more than any specific algorithm' },
+      { id: 'st-s5-2', text: 'Learn logistic regression and decision trees with scikit-learn', hint: 'These are the workhorses of fraud detection — interpretable and fast' },
+      { id: 'st-s5-3', text: 'Learn precision, recall, F1, ROC-AUC — and when each matters', hint: 'In fraud: high recall = catch more bad guys, low precision = more false positives. Know the tradeoff.' },
+      { id: 'st-s5-4', text: 'Handle class imbalance with SMOTE or class_weight', hint: 'Fraud datasets are 99% legit, 1% fraud. Naive models just predict "legit" every time.' },
+      { id: 'st-s5-5', text: 'Train a classifier on a real imbalanced dataset and report metrics', hint: 'Use the credit card fraud dataset on Kaggle — classic fraud ML benchmark' },
+    ],
+    resources: [
+      { label: 'Scikit-learn user guide', url: 'https://scikit-learn.org/stable/user_guide.html' },
+      { label: 'Kaggle credit card fraud dataset', url: 'https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud' },
+    ]
+  },
+  s6: {
+    desc: "The features you engineer matter more than the model you choose. Behavioral features — how someone acts over time — are the heart of abuse detection.",
+    steps: [
+      { id: 'st-s6-1', text: 'Learn the difference between raw features and engineered features', hint: 'Raw: "post count". Engineered: "posts per hour in last 24h" — much more signal' },
+      { id: 'st-s6-2', text: 'Practice time-windowed aggregations (hourly, daily, 7-day rolling)', hint: 'Use pandas resample() and rolling() — these are core abuse detection patterns' },
+      { id: 'st-s6-3', text: 'Build velocity features: rate of action over time', hint: 'e.g. login_attempts_last_hour, new_accounts_from_ip_last_24h' },
+      { id: 'st-s6-4', text: 'Build ratio features: relationships between signals', hint: 'e.g. flagged_posts / total_posts, failed_logins / total_logins' },
+      { id: 'st-s6-5', text: 'Apply your features to the Reddit bot detector project', hint: 'Go back and enrich your bot detector with 5+ engineered behavioral features' },
+    ],
+    resources: [
+      { label: 'Feature engineering for ML (Google)', url: 'https://developers.google.com/machine-learning/data-prep' },
+    ]
+  },
+  s7: {
+    desc: "Docker means your projects run everywhere — not just your laptop. It's also how real production abuse systems are deployed.",
+    steps: [
+      { id: 'st-s7-1', text: 'Install Docker Desktop and run your first container', hint: 'docker run hello-world — if it prints a message, you\'re set up' },
+      { id: 'st-s7-2', text: 'Write a Dockerfile for your Flask/FastAPI project', hint: 'FROM python:3.11-slim → COPY → RUN pip install → CMD' },
+      { id: 'st-s7-3', text: 'Build and run your app as a Docker container locally', hint: 'docker build -t myapp . && docker run -p 8000:8000 myapp' },
+      { id: 'st-s7-4', text: 'Add a docker-compose.yml to your project', hint: 'Useful when your app needs a database — compose spins both up together' },
+      { id: 'st-s7-5', text: 'Push your image to Docker Hub', hint: 'docker push yourusername/myapp — link it from your GitHub README' },
+    ],
+    resources: [
+      { label: 'Docker getting started guide', url: 'https://docs.docker.com/get-started' },
+    ]
+  },
+  s8: {
+    desc: "Monitoring is how you know your abuse systems are working. Building dashboards and alerts is explicitly mentioned in the Anthropic job description.",
+    steps: [
+      { id: 'st-s8-1', text: 'Install Grafana locally with Docker', hint: 'docker run -d -p 3000:3000 grafana/grafana — login at localhost:3000' },
+      { id: 'st-s8-2', text: 'Connect a data source (SQLite or Postgres) to Grafana', hint: 'The SQLite plugin works great for local projects' },
+      { id: 'st-s8-3', text: 'Build a dashboard with 3+ panels showing metrics over time', hint: 'e.g. events per minute, flagged accounts per day, false positive rate' },
+      { id: 'st-s8-4', text: 'Set up one alert rule that fires when a threshold is crossed', hint: 'e.g. alert if flagged events > 100 in 5 minutes — email or Slack webhook' },
+      { id: 'st-s8-5', text: 'Screenshot your dashboard and add it to your project README', hint: 'Visual proof of operational thinking — stands out in portfolios' },
+    ],
+    resources: [
+      { label: 'Grafana getting started', url: 'https://grafana.com/docs/grafana/latest/getting-started/build-first-dashboard' },
+    ]
+  },
+  pr3: {
+    desc: "Fake review detection is a canonical fraud ML problem. You'll deal with class imbalance, feature engineering, and the precision/recall tradeoff — all core skills.",
+    steps: [
+      { id: 'st-pr3-1', text: 'Download the Yelp Open Dataset', hint: 'yelp.com/dataset — free academic dataset with millions of reviews' },
+      { id: 'st-pr3-2', text: 'Explore the data: review text, ratings, user history, dates', hint: 'Look at the distribution of ratings, review lengths, user review counts' },
+      { id: 'st-pr3-3', text: 'Engineer at least 8 features per review', hint: 'Review length, rating deviation from business avg, user review velocity, time since last review, etc.' },
+      { id: 'st-pr3-4', text: 'Label suspicious reviews with heuristics (no ground truth needed)', hint: 'e.g. 5-star on day 1 of business opening, user with 1 review, very short text' },
+      { id: 'st-pr3-5', text: 'Train a classifier and evaluate with precision, recall, AUC', hint: 'Try both logistic regression and random forest — compare results' },
+      { id: 'st-pr3-6', text: 'Document model performance and tradeoffs in the README', hint: 'Explain: if you lower threshold, recall goes up but precision drops — show you understand this' },
+    ],
+    resources: [
+      { label: 'Yelp Open Dataset', url: 'https://www.yelp.com/dataset' },
+    ]
+  },
+  pr4: {
+    desc: "Building the attack and the defense teaches you how adversaries think — the most important skill for abuse engineering. This project directly mirrors what you'd build at Anthropic.",
+    steps: [
+      { id: 'st-pr4-1', text: 'Build a FastAPI app with a /login endpoint and a /action endpoint', hint: 'Store fake user accounts in SQLite — keep it simple' },
+      { id: 'st-pr4-2', text: 'Write an attacker script that simulates credential stuffing', hint: 'Loop through a list of username/password pairs rapidly — this is the attack' },
+      { id: 'st-pr4-3', text: 'Add IP-based rate limiting to the login endpoint', hint: 'Use slowapi or a Redis counter — block after 10 attempts per minute per IP' },
+      { id: 'st-pr4-4', text: 'Write an attacker script that rotates IPs (simulated)', hint: 'Pass a random X-Forwarded-For header — see how your defense holds up' },
+      { id: 'st-pr4-5', text: 'Add behavioral rate limiting (per-user, not just per-IP)', hint: 'Track attempts per username across IPs — harder to evade' },
+      { id: 'st-pr4-6', text: 'Write a README that documents the attack, the defense, and what you learned', hint: 'This is exactly the "offense + defense" thinking Anthropic is looking for' },
+    ],
+    resources: [
+      { label: 'FastAPI docs', url: 'https://fastapi.tiangolo.com' },
+      { label: 'SlowAPI rate limiting', url: 'https://github.com/laurentS/slowapi' },
+    ]
+  },
+  n3: {
+    desc: "OWASP is the gold standard community for web application security. Their NYC chapter meets regularly and has practitioners from major NYC tech companies.",
+    steps: [
+      { id: 'st-n3-1', text: 'Find the next OWASP NY meeting on their chapter page', hint: 'owasp.org/www-chapter-new-york-city — events listed there' },
+      { id: 'st-n3-2', text: 'Attend and listen for real-world attack/defense case studies', hint: 'Take notes on attack patterns — they\'re directly relevant to your projects' },
+      { id: 'st-n3-3', text: 'Introduce yourself to at least one security engineer and exchange LinkedIn', hint: '"I\'m building toward abuse engineering — your talk on X was really interesting"' },
+    ],
+    resources: [
+      { label: 'OWASP New York City chapter', url: 'https://owasp.org/www-chapter-new-york-city' },
+    ]
+  },
+  n4: {
+    desc: "Recurse Center is one of NYC's best engineering communities. Their events are open to the public and you'll meet engineers working on genuinely interesting problems.",
+    steps: [
+      { id: 'st-n4-1', text: 'Check Recurse Center\'s events page for open community events', hint: 'recurse.com/events — some events are alumni-only but many are public' },
+      { id: 'st-n4-2', text: 'Attend one event and talk to at least 2 engineers about their work', hint: 'RC attracts self-directed, curious engineers — great network to have' },
+      { id: 'st-n4-3', text: 'Consider applying to an RC batch (12-week self-directed program)', hint: 'Highly competitive but transformative — worth applying in year 2 or 3' },
+    ],
+    resources: [
+      { label: 'Recurse Center', url: 'https://www.recurse.com' },
+    ]
+  },
+  s9: {
+    desc: "Account rings — coordinated networks of fake accounts sharing IPs, devices, referral codes — are best modeled as graphs. NetworkX is the go-to Python library for this.",
+    steps: [
+      { id: 'st-s9-1', text: 'Learn graph fundamentals: nodes, edges, directed vs undirected', hint: 'Think of accounts as nodes, shared signals (IP, device) as edges' },
+      { id: 'st-s9-2', text: 'Install NetworkX and create a simple graph from synthetic data', hint: 'nx.Graph(), g.add_edge("account_1", "account_2", weight=1)' },
+      { id: 'st-s9-3', text: 'Implement connected components detection', hint: 'nx.connected_components(G) — clusters of accounts that are all linked' },
+      { id: 'st-s9-4', text: 'Calculate centrality metrics (degree, betweenness)', hint: 'High-degree nodes in an abuse ring are often the "hub" accounts' },
+      { id: 'st-s9-5', text: 'Visualize a small account graph with matplotlib', hint: 'nx.draw() — even a basic visual makes the concept click' },
+    ],
+    resources: [
+      { label: 'NetworkX documentation', url: 'https://networkx.org/documentation/stable/tutorial.html' },
+    ]
+  },
+  s10: {
+    desc: "Real abuse detection happens in real time. Understanding how stream processing works conceptually will prepare you for production abuse systems.",
+    steps: [
+      { id: 'st-s10-1', text: 'Understand the difference between batch and stream processing', hint: 'Batch: process yesterday\'s data. Stream: process each event as it happens.' },
+      { id: 'st-s10-2', text: 'Learn Kafka core concepts: topics, producers, consumers, partitions', hint: 'You don\'t need to be an operator — just understand the mental model' },
+      { id: 'st-s10-3', text: 'Run a local Kafka instance with Docker Compose', hint: 'Use the Confluent community Docker image — good for learning' },
+      { id: 'st-s10-4', text: 'Write a Python producer that emits fake login events', hint: 'Publish a JSON event per second: {user_id, ip, timestamp, success}' },
+      { id: 'st-s10-5', text: 'Write a consumer that counts failed logins per user in a sliding window', hint: 'This is a simplified real-time abuse detection pattern' },
+    ],
+    resources: [
+      { label: 'Kafka quickstart', url: 'https://kafka.apache.org/quickstart' },
+      { label: 'Confluent Docker setup', url: 'https://docs.confluent.io/platform/current/platform-quickstart.html' },
+    ]
+  },
+  s11: {
+    desc: "Abuse systems store and query massive amounts of data. Deep Postgres knowledge — especially query optimization — is what lets you build detection that actually scales.",
+    steps: [
+      { id: 'st-s11-1', text: 'Understand how indexes work and when to use them', hint: 'B-tree indexes are default — use them on columns you filter or join on frequently' },
+      { id: 'st-s11-2', text: 'Learn EXPLAIN ANALYZE and how to read query plans', hint: 'Run EXPLAIN ANALYZE on one of your slow queries and find the bottleneck' },
+      { id: 'st-s11-3', text: 'Practice partitioning a large table by time range', hint: 'Event logs are a perfect use case — partition by month' },
+      { id: 'st-s11-4', text: 'Implement a materialized view for a slow aggregation query', hint: 'Great for dashboards that need pre-computed counts of flagged accounts' },
+      { id: 'st-s11-5', text: 'Load 1M+ rows into Postgres and optimize a query from >1s to <100ms', hint: 'Generate synthetic data with Python — this is a meaningful portfolio exercise' },
+    ],
+    resources: [
+      { label: 'Use The Index, Luke (free book)', url: 'https://use-the-index-luke.com' },
+      { label: 'Postgres EXPLAIN docs', url: 'https://www.postgresql.org/docs/current/using-explain.html' },
+    ]
+  },
+  s12: {
+    desc: "Writing RCAs is a core engineering skill and something abuse engineers do constantly after incidents. It also signals technical maturity to interviewers.",
+    steps: [
+      { id: 'st-s12-1', text: 'Read 3 real public incident post-mortems to understand the format', hint: 'GitHub, Cloudflare, and Stripe have published excellent post-mortems' },
+      { id: 'st-s12-2', text: 'Pick a real or simulated incident from your projects', hint: 'e.g. "My bot detector missed a wave of bots — why?" or a real Broadridge incident if appropriate' },
+      { id: 'st-s12-3', text: 'Write the timeline: what happened, when, what was detected', hint: 'Be specific with timestamps — vague timelines suggest poor observability' },
+      { id: 'st-s12-4', text: 'Write the root cause: the actual underlying reason it happened', hint: '"We missed it because X" not "we should have caught it" — blame the system not people' },
+      { id: 'st-s12-5', text: 'Write action items: concrete things that would prevent recurrence', hint: 'Each action item should be assigned and have a deadline — make them real' },
+    ],
+    resources: [
+      { label: 'Postmortems.io (real examples)', url: 'https://postmortems.io' },
+    ]
+  },
+  pr5: {
+    desc: "This is the most advanced project on the list and the most directly relevant to Anthropic's abuse team. Modeling account networks as graphs mirrors exactly what production abuse systems do.",
+    steps: [
+      { id: 'st-pr5-1', text: 'Generate a synthetic dataset of 10,000 accounts with attributes', hint: 'Use Faker in Python: account_id, created_at, ip_address, device_id, referral_code' },
+      { id: 'st-pr5-2', text: 'Embed abuse patterns in the data (account rings)', hint: 'Create 20 clusters of 5–15 accounts that share IPs or device IDs' },
+      { id: 'st-pr5-3', text: 'Build a graph where edges = shared signals between accounts', hint: 'Two accounts share an IP → add edge. Use edge weights for signal strength.' },
+      { id: 'st-pr5-4', text: 'Detect clusters using connected components and community detection', hint: 'nx.community.greedy_modularity_communities(G) for community detection' },
+      { id: 'st-pr5-5', text: 'Evaluate: did you recover your planted abuse rings?', hint: 'Precision/recall vs your ground truth — how well did the graph method work?' },
+      { id: 'st-pr5-6', text: 'Visualize the graph highlighting detected clusters', hint: 'Color nodes by cluster — the rings should visually pop out' },
+      { id: 'st-pr5-7', text: 'Write it up thoroughly on GitHub — this is your flagship project', hint: 'Include the approach, results, what worked, what didn\'t, and what you\'d do next' },
+    ],
+    resources: [
+      { label: 'NetworkX community algorithms', url: 'https://networkx.org/documentation/stable/reference/algorithms/community.html' },
+      { label: 'Faker (synthetic data)', url: 'https://faker.readthedocs.io' },
+    ]
+  },
+  pr6: {
+    desc: "The Anthropic job description explicitly mentions 'internal admin UX'. Building a trust & safety review tool shows you understand the full operational picture, not just the technical one.",
+    steps: [
+      { id: 'st-pr6-1', text: 'Design the data model: flagged_accounts, reviews, rules tables', hint: 'Keep it simple: an account can be flagged, reviewed (approved/rejected), and have notes' },
+      { id: 'st-pr6-2', text: 'Build a backend API with FastAPI that serves the flagged queue', hint: 'GET /queue → list of accounts to review, POST /review → submit a decision' },
+      { id: 'st-pr6-3', text: 'Build a simple frontend: a table of flagged accounts with action buttons', hint: 'Plain HTML/JS is fine — focus on usability, not aesthetics' },
+      { id: 'st-pr6-4', text: 'Add a rule management page: create/edit/disable detection rules', hint: 'Rules could be simple: "flag accounts created < 24h ago with > 50 actions"' },
+      { id: 'st-pr6-5', text: 'Add basic metrics to a summary panel: queue depth, review rate', hint: 'How many accounts are pending? How fast is the queue being cleared?' },
+      { id: 'st-pr6-6', text: 'Write a README explaining the product decisions you made', hint: 'Why did you design the queue this way? What would you add with more time?' },
+    ],
+    resources: [
+      { label: 'FastAPI full stack example', url: 'https://github.com/tiangolo/full-stack-fastapi-template' },
+    ]
+  },
+  n5: {
+    desc: "The Trust & Safety Professionals Association is the actual professional community for this field. Getting involved early puts you years ahead of peers who discover it later.",
+    steps: [
+      { id: 'st-n5-1', text: 'Join TSPA as a member (free for individuals)', hint: 'tspa.org — membership gives you access to events and the community Slack' },
+      { id: 'st-n5-2', text: 'Attend one virtual or in-person TSPA event', hint: 'They run webinars and in-person events in NYC — check the events calendar' },
+      { id: 'st-n5-3', text: 'Introduce yourself in the TSPA community Slack', hint: '"New grad SWE at Broadridge, building toward abuse engineering, excited to learn from this community"' },
+    ],
+    resources: [
+      { label: 'Trust & Safety Professionals Association', url: 'https://www.tspa.org' },
+    ]
+  },
+  n6: {
+    desc: "NYC has a thriving fintech meetup scene. The engineers you meet now become the referrals you need in 2–3 years when you're ready to pivot.",
+    steps: [
+      { id: 'st-n6-1', text: 'Search Meetup.com for "fintech NYC" and "fraud detection NYC"', hint: 'Filter by upcoming events — aim for one per month' },
+      { id: 'st-n6-2', text: 'Attend one fintech meetup and talk to engineers about their abuse/fraud work', hint: '"What does your fraud stack look like?" is a great conversation starter with engineers' },
+      { id: 'st-n6-3', text: 'Follow up with 3 people on LinkedIn within 48 hours', hint: 'Reference something specific from your conversation — not a generic connection request' },
+    ],
+    resources: [
+      { label: 'Fintech NYC Meetup', url: 'https://www.meetup.com/find/?keywords=fintech+nyc' },
+    ]
+  },
+  s13: {
+    desc: "LLM abuse is the frontier of this field and Anthropic's core domain. Understanding how people try to misuse AI systems is directly what the Account Abuse team defends against.",
+    steps: [
+      { id: 'st-s13-1', text: 'Read Anthropic\'s published research on model safety', hint: 'anthropic.com/research — start with Constitutional AI and the model cards' },
+      { id: 'st-s13-2', text: 'Study common LLM attack patterns: prompt injection, jailbreaks, DAN', hint: 'learnprompting.org/docs/prompt_hacking/intro has a good overview' },
+      { id: 'st-s13-3', text: 'Read about multi-turn jailbreaks and context manipulation attacks', hint: 'These are harder to detect because they look benign turn-by-turn' },
+      { id: 'st-s13-4', text: 'Research how AI APIs are abused at scale (spam, fraud, CSAM generation)', hint: 'This is the domain the Anthropic Account Abuse team specifically works on' },
+      { id: 'st-s13-5', text: 'Write a 1-page personal summary of LLM abuse threat landscape', hint: 'Synthesizing this into your own words is the best way to internalize it' },
+    ],
+    resources: [
+      { label: 'Anthropic research', url: 'https://www.anthropic.com/research' },
+      { label: 'Learn Prompting — prompt hacking', url: 'https://learnprompting.org/docs/prompt_hacking/intro' },
+    ]
+  },
+  s14: {
+    desc: "System design interviews are how senior SWE roles are evaluated. For abuse engineering, you'll be asked to design detection systems — practice that specifically.",
+    steps: [
+      { id: 'st-s14-1', text: 'Learn the standard system design framework (requirements → scale → components)', hint: 'Clarify requirements, estimate scale, pick components, discuss tradeoffs' },
+      { id: 'st-s14-2', text: 'Practice designing a rate limiter from scratch', hint: 'Token bucket vs sliding window — know both and their tradeoffs' },
+      { id: 'st-s14-3', text: 'Practice designing a fraud detection system', hint: 'Cover: signal ingestion, feature computation, model serving, human review queue' },
+      { id: 'st-s14-4', text: 'Practice designing an account abuse detection pipeline', hint: 'This is literally the Anthropic role — think about real-time vs batch, signals, ML vs rules' },
+      { id: 'st-s14-5', text: 'Do 3 mock system design interviews with a peer or on Pramp', hint: 'pramp.com has free peer mock interviews — invaluable for getting reps in' },
+    ],
+    resources: [
+      { label: 'System Design Primer (GitHub)', url: 'https://github.com/donnemartin/system-design-primer' },
+      { label: 'Pramp (free mock interviews)', url: 'https://www.pramp.com' },
+    ]
+  },
+  s15: {
+    desc: "Anthropic takes its mission seriously. Candidates who genuinely understand the safety problem — not just the engineering — stand out. Read their work like you mean it.",
+    steps: [
+      { id: 'st-s15-1', text: 'Read Anthropic\'s core safety research: Constitutional AI paper', hint: 'It explains how Claude\'s values are trained — fundamental context for the role' },
+      { id: 'st-s15-2', text: 'Read Anthropic\'s Responsible Scaling Policy', hint: 'anthropic.com/news/anthropics-responsible-scaling-policy — understand their commitments' },
+      { id: 'st-s15-3', text: 'Subscribe to Anthropic\'s newsletter or follow their blog', hint: 'anthropic.com/news — read every post, even technical ones outside your domain' },
+      { id: 'st-s15-4', text: 'Write down 3 genuine questions you\'d ask an Anthropic engineer about their work', hint: 'Not "how do I get a job" — substantive questions about the safety or abuse problems they work on' },
+    ],
+    resources: [
+      { label: 'Anthropic research page', url: 'https://www.anthropic.com/research' },
+      { label: 'Anthropic news & blog', url: 'https://www.anthropic.com/news' },
+    ]
+  },
+  s16: {
+    desc: "Your GitHub is your resume's evidence. Every project should tell a story clearly — what it does, why it matters, and that you can write clean, documented code.",
+    steps: [
+      { id: 'st-s16-1', text: 'Write a strong README for each project (what, why, how to run)', hint: 'Include: 1 sentence description, tech stack, setup instructions, one screenshot or diagram' },
+      { id: 'st-s16-2', text: 'Clean up your commit history on each project', hint: 'Squash "wip" commits, write descriptive messages — imagine a hiring manager reading them' },
+      { id: 'st-s16-3', text: 'Add docstrings and comments to your Python code', hint: 'Not every line — but every function should have a one-line description of what it does' },
+      { id: 'st-s16-4', text: 'Deploy at least one project with a live demo link', hint: 'Render.com and Railway have free tiers — a live link in the README is a big upgrade' },
+      { id: 'st-s16-5', text: 'Pin your 4 best repos on your GitHub profile', hint: 'Your profile page is a portfolio — curate it, don\'t leave it to chance' },
+    ],
+    resources: [
+      { label: 'Render (free deployment)', url: 'https://render.com' },
+      { label: 'Railway (free deployment)', url: 'https://railway.app' },
+    ]
+  },
+  pr7: {
+    desc: "This project is directly relevant to Anthropic's work. Building a classifier that detects prompt injection shows you understand LLM abuse — the exact domain of the role.",
+    steps: [
+      { id: 'st-pr7-1', text: 'Collect or generate a dataset of benign vs malicious prompts', hint: 'GitHub has public jailbreak datasets — search "jailbreak prompts dataset"' },
+      { id: 'st-pr7-2', text: 'Engineer text features: length, special characters, injection keywords', hint: 'Look for patterns like "ignore previous instructions", role-play triggers, code injection' },
+      { id: 'st-pr7-3', text: 'Train a classifier to distinguish benign from malicious prompts', hint: 'Try TF-IDF + logistic regression as a baseline, then try a transformer if you\'re ambitious' },
+      { id: 'st-pr7-4', text: 'Evaluate on a held-out test set and document false positive rate', hint: 'False positives are expensive — a safety filter that blocks legit users is a real problem' },
+      { id: 'st-pr7-5', text: 'Build a simple API endpoint that accepts a prompt and returns a risk score', hint: 'POST /score → { "prompt": "...", "score": 0.87, "flagged": true }' },
+      { id: 'st-pr7-6', text: 'Write a thorough README discussing what your classifier catches and misses', hint: 'Adversarial robustness analysis — what would an attacker do to evade your detector?' },
+    ],
+    resources: [
+      { label: 'Jailbreak prompts dataset (HuggingFace)', url: 'https://huggingface.co/datasets/rubend18/ChatGPT-Jailbreak-Prompts' },
+      { label: 'Anthropic\'s research on prompt injection', url: 'https://www.anthropic.com/research' },
+    ]
+  },
+  pr8: {
+    desc: "Writing publicly about your projects compounds over time. It builds your reputation, forces you to understand your work deeply, and gets you found by recruiters.",
+    steps: [
+      { id: 'st-pr8-1', text: 'Set up a Medium or Substack account', hint: 'Medium has better SEO discovery; Substack is better if you want subscribers' },
+      { id: 'st-pr8-2', text: 'Write your first post about the Reddit bot detector project', hint: 'Structure: problem → approach → what you built → what you learned. ~800-1200 words.' },
+      { id: 'st-pr8-3', text: 'Write a second post about a technical concept you learned (graphs, feature engineering, etc.)', hint: '"What I learned building X" posts perform well and demonstrate genuine learning' },
+      { id: 'st-pr8-4', text: 'Share your posts on LinkedIn and tag relevant communities', hint: 'Tag #trustandsafety #frauddetection #machinelearning — real practitioners read these feeds' },
+      { id: 'st-pr8-5', text: 'Write a third post closer to application time about LLM abuse patterns', hint: 'This one signals directly that you understand Anthropic\'s specific domain' },
+    ],
+    resources: [
+      { label: 'Medium', url: 'https://medium.com' },
+      { label: 'Substack', url: 'https://substack.com' },
+    ]
+  },
+  n7: {
+    desc: "Stripe, Coinbase, and similar companies are the ideal stepping stones. They have serious, well-funded abuse teams and give you the tech credibility Anthropic looks for.",
+    steps: [
+      { id: 'st-n7-1', text: 'Research which NYC-based companies have dedicated abuse/fraud teams', hint: 'Stripe, Coinbase, Ramp, Brex, Plaid, TikTok, LinkedIn all have NYC presence and strong integrity teams' },
+      { id: 'st-n7-2', text: 'Set up job alerts for "trust and safety engineer" and "fraud engineer" in NYC', hint: 'LinkedIn Jobs, Greenhouse, and Lever all have alert features' },
+      { id: 'st-n7-3', text: 'Identify 5 target companies and find their engineering blogs', hint: 'Read how they talk about their abuse problems — use this in cover letters and interviews' },
+      { id: 'st-n7-4', text: 'Start applying 3–4 months before you want to make the move', hint: 'Hiring processes take 4–8 weeks at most companies — plan accordingly' },
+    ],
+    resources: [
+      { label: 'Stripe engineering blog', url: 'https://stripe.com/blog/engineering' },
+      { label: 'Coinbase engineering blog', url: 'https://www.coinbase.com/blog/engineering' },
+    ]
+  },
+  n8: {
+    desc: "A warm connection at Anthropic is worth more than a cold application. Reaching out genuinely — about their work, not just for a job — is how real relationships form.",
+    steps: [
+      { id: 'st-n8-1', text: 'Find 5–10 Anthropic engineers on LinkedIn who work on safety or abuse', hint: 'Search "Anthropic trust safety" or "Anthropic engineer" — look for people with published work' },
+      { id: 'st-n8-2', text: 'Read something they\'ve written or published before messaging them', hint: 'A blog post, a paper, a tweet thread — reference it specifically in your message' },
+      { id: 'st-n8-3', text: 'Send a genuine, specific LinkedIn message (not a job request)', hint: '"I read your post on X and had a question about Y" is far better than "Can you refer me?"' },
+      { id: 'st-n8-4', text: 'If they respond, ask for a 20-minute informational chat', hint: '"I\'d love to hear how you think about Z problem — would you have 20 mins sometime?"' },
+      { id: 'st-n8-5', text: 'After the chat, send a thank you and stay loosely in touch', hint: 'Share a relevant article every few months — stay on their radar without being pushy' },
+    ],
+    resources: [
+      { label: 'Anthropic team page', url: 'https://www.anthropic.com/company' },
+    ]
+  },
+};
+
 const PHASES = [
   {
-    id: 'p1',
-    label: 'Months 1–6',
-    icon: '🌱',
-    color: '#4a7c59',
-    barColor: '#4a7c59',
+    id: 'p1', label: 'Months 1–6', icon: '🌱', color: '#4a7c59', barColor: '#4a7c59',
     title: 'Foundation — get solid, fill gaps',
     skills: [
       { id: 's1', text: 'Get comfortable with Pandas & NumPy', sub: 'Complete at least one end-to-end data analysis project' },
@@ -663,15 +701,11 @@ const PHASES = [
     ]
   },
   {
-    id: 'p2',
-    label: 'Months 7–12',
-    icon: '🌿',
-    color: '#2d5a3d',
-    barColor: '#2d5a3d',
+    id: 'p2', label: 'Months 7–12', icon: '🌿', color: '#2d5a3d', barColor: '#2d5a3d',
     title: 'Depth — ML basics & abuse patterns',
     skills: [
       { id: 's5', text: 'Learn ML fundamentals with scikit-learn', sub: 'Classification, precision/recall tradeoffs, class imbalance' },
-      { id: 's6', text: 'Understand feature engineering', sub: 'Especially behavioral/temporal features for fraud detection' },
+      { id: 's6', text: 'Understand feature engineering', sub: 'Behavioral/temporal features for fraud detection' },
       { id: 's7', text: 'Learn Docker basics', sub: 'Containerize your projects so they run anywhere' },
       { id: 's8', text: 'Get familiar with a monitoring tool', sub: 'Grafana (free) or Datadog trial — build one dashboard' },
     ],
@@ -681,81 +715,76 @@ const PHASES = [
     ],
     nyc: [
       { id: 'n3', text: 'Attend an OWASP NY chapter meeting', sub: 'owasp.org/www-chapter-new-york-city' },
-      { id: 'n4', text: 'Check out Recurse Center events (free, open to public)', sub: 'recurse.com — great engineering community in NYC' },
+      { id: 'n4', text: 'Check out Recurse Center events', sub: 'recurse.com — great engineering community in NYC' },
     ]
   },
   {
-    id: 'p3',
-    label: 'Months 13–18',
-    icon: '🌸',
-    color: '#8fa882',
-    barColor: '#8fa882',
+    id: 'p3', label: 'Months 13–18', icon: '🌸', color: '#8fa882', barColor: '#8fa882',
     title: 'Specialization — end-to-end abuse systems',
     skills: [
       { id: 's9', text: 'Learn graph analysis with NetworkX', sub: 'Model account relationships, detect clusters' },
-      { id: 's10', text: 'Understand stream processing basics', sub: 'Kafka or Kinesis concepts — how real-time detection works' },
+      { id: 's10', text: 'Understand stream processing basics', sub: 'Kafka or Kinesis — how real-time detection works' },
       { id: 's11', text: 'Get deep on Postgres', sub: 'Indexes, explain plans, query optimization at scale' },
-      { id: 's12', text: 'Write your first root cause analysis (RCA)', sub: 'Document a real incident or a simulated one from your projects' },
+      { id: 's12', text: 'Write your first root cause analysis (RCA)', sub: 'Document a real or simulated incident' },
     ],
     projects: [
       { id: 'pr5', text: 'Account network graph', sub: 'Model fake account clusters via shared IPs, devices, referrals' },
-      { id: 'pr6', text: 'Trust & safety admin dashboard', sub: 'Flag queue, analyst notes, rule management UI — mirrors real tooling' },
+      { id: 'pr6', text: 'Trust & safety admin dashboard', sub: 'Flag queue, analyst notes, rule management UI' },
     ],
     nyc: [
-      { id: 'n5', text: 'Attend a Trust & Safety Professionals Association event', sub: 'tspa.org — actual industry community' },
-      { id: 'n6', text: 'Start going to fintech meetups (Stripe, Coinbase, etc.)', sub: 'Meetup.com — search "fintech NYC"' },
+      { id: 'n5', text: 'Attend a Trust & Safety Professionals Association event', sub: 'tspa.org' },
+      { id: 'n6', text: 'Start going to fintech meetups', sub: 'Meetup.com — search "fintech NYC"' },
     ]
   },
   {
-    id: 'p4',
-    label: 'Months 19–24',
-    icon: '🌼',
-    color: '#e8a800',
-    barColor: '#e8a800',
+    id: 'p4', label: 'Months 19–24', icon: '🌼', color: '#e8a800', barColor: '#e8a800',
     title: 'Positioning — make the pivot visible',
     skills: [
-      { id: 's13', text: 'Study LLM abuse patterns', sub: 'Prompt injection, jailbreaks, misuse at scale — read Anthropic research' },
-      { id: 's14', text: 'Practice system design interviews', sub: 'Focus on fraud/abuse detection system design specifically' },
-      { id: 's15', text: "Read Anthropic's research papers & blog posts", sub: 'anthropic.com/research — understand their mission deeply' },
-      { id: 's16', text: 'Polish your GitHub portfolio', sub: 'README files, clean code, deployed demos where possible' },
+      { id: 's13', text: 'Study LLM abuse patterns', sub: 'Prompt injection, jailbreaks, misuse at scale' },
+      { id: 's14', text: 'Practice system design interviews', sub: 'Focus on fraud/abuse detection system design' },
+      { id: 's15', text: "Read Anthropic's research papers & blog posts", sub: 'anthropic.com/research — understand the mission deeply' },
+      { id: 's16', text: 'Polish your GitHub portfolio', sub: 'README files, clean code, deployed demos' },
     ],
     projects: [
       { id: 'pr7', text: 'LLM prompt injection detector', sub: 'Classifier that flags jailbreak attempts on an LLM API' },
-      { id: 'pr8', text: 'Publish 2–3 technical blog posts', sub: 'Write about your projects on Medium or Substack — recruiters read these' },
+      { id: 'pr8', text: 'Publish 2–3 technical blog posts', sub: 'Write about your projects — recruiters read these' },
     ],
     nyc: [
-      { id: 'n7', text: 'Target NYC-based roles at Stripe, Coinbase, or similar', sub: 'These companies have serious abuse teams — great stepping stones' },
-      { id: 'n8', text: 'Reach out to Anthropic engineers on LinkedIn', sub: 'Genuine, specific messages about their work — not just "can you refer me"' },
+      { id: 'n7', text: 'Target NYC roles at Stripe, Coinbase, or similar', sub: 'Serious abuse teams — great stepping stones' },
+      { id: 'n8', text: 'Reach out to Anthropic engineers on LinkedIn', sub: 'Genuine messages about their work, not job requests' },
     ]
   }
 ];
 
-const STORAGE_KEY = 'daisy_anthropic_tracker_v1';
-let state = { checks: {}, notes: {} };
+const STORAGE_KEY = 'daisy_anthropic_tracker_v2';
+let state = { checks: {}, stepChecks: {}, notes: {} };
 let openPhases = { p1: true, p2: false, p3: false, p4: false };
+let currentPanelId = null;
 
 function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) state = JSON.parse(raw);
-  } catch(e) {}
+  try { const r = localStorage.getItem(STORAGE_KEY); if (r) state = JSON.parse(r); } catch(e) {}
 }
 
 function saveState() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch(e) {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
 }
 
 function allItems() {
   return PHASES.flatMap(p => [...p.skills, ...p.projects, ...p.nyc]);
 }
 
+function getStepsDone(taskId) {
+  const detail = TASK_DETAILS[taskId];
+  if (!detail) return { done: 0, total: 0 };
+  const total = detail.steps.length;
+  const done = detail.steps.filter(s => state.stepChecks[s.id]).length;
+  return { done, total };
+}
+
 function updateStats() {
   const total = allItems().length;
   const done = allItems().filter(i => state.checks[i.id]).length;
   const pct = total > 0 ? Math.round(done / total * 100) : 0;
-
   document.getElementById('stat-done').textContent = done;
   document.getElementById('stat-total').textContent = total;
   document.getElementById('stat-pct').textContent = pct + '%';
@@ -781,18 +810,28 @@ function updateStats() {
   });
 }
 
-function section(items, label) {
+function section(items, label, phaseColor) {
   return `
     <div class="section-head"><span>${label}</span></div>
-    ${items.map(item => `
-      <div class="check-item" onclick="toggle('${item.id}')">
-        <input type="checkbox" id="cb-${item.id}" data-id="${item.id}" ${state.checks[item.id] ? 'checked' : ''} onclick="event.stopPropagation();toggle('${item.id}')">
-        <div class="check-text">
-          <div class="check-main ${state.checks[item.id] ? 'done' : ''}" id="lbl-${item.id}">${item.text}</div>
-          ${item.sub ? `<div class="check-sub">${item.sub}</div>` : ''}
+    ${items.map(item => {
+      const { done, total } = getStepsDone(item.id);
+      const hasSteps = total > 0;
+      return `
+        <div class="check-item">
+          <input type="checkbox" id="cb-${item.id}" data-id="${item.id}" ${state.checks[item.id] ? 'checked' : ''} onchange="toggleMain('${item.id}')">
+          <div class="check-text" onclick="openPanel('${item.id}')">
+            <div class="check-main ${state.checks[item.id] ? 'done' : ''}" id="lbl-${item.id}">${item.text}</div>
+            <div class="check-sub">${item.sub}</div>
+            ${hasSteps ? `
+              <div class="task-progress">
+                <div class="task-prog-bar"><div class="task-prog-fill" id="tpf-${item.id}" style="width:${total>0?Math.round(done/total*100):0}%;background:${phaseColor}"></div></div>
+                <span class="task-prog-label" id="tpl-${item.id}">${done}/${total} steps</span>
+              </div>` : ''}
+          </div>
+          <button class="open-panel-btn" onclick="openPanel('${item.id}')">Guide →</button>
         </div>
-      </div>
-    `).join('')}
+      `;
+    }).join('')}
   `;
 }
 
@@ -804,7 +843,7 @@ function render() {
     const pct = items.length > 0 ? Math.round(done / items.length * 100) : 0;
     const isOpen = openPhases[p.id];
     return `
-      <div class="phase-card" style="animation-delay:${0.1 + i * 0.08}s">
+      <div class="phase-card" style="animation-delay:${0.1+i*0.08}s">
         <div class="phase-header" onclick="togglePhase('${p.id}')">
           <div class="phase-icon" style="background:${p.color}22;">${p.icon}</div>
           <div class="phase-meta">
@@ -813,19 +852,17 @@ function render() {
           </div>
           <div class="phase-right">
             <span class="phase-count" id="count-${p.id}">${done}/${items.length}</span>
-            <div class="phase-mini-bar">
-              <div class="phase-mini-fill" id="fill-${p.id}" style="width:${pct}%;background:${p.barColor}"></div>
-            </div>
+            <div class="phase-mini-bar"><div class="phase-mini-fill" id="fill-${p.id}" style="width:${pct}%;background:${p.barColor}"></div></div>
             <span class="chevron" id="chev-${p.id}" style="transform:rotate(${isOpen?'180deg':'0deg'})">▾</span>
           </div>
         </div>
-        <div class="phase-body ${isOpen ? 'open' : ''}" id="body-${p.id}">
-          ${section(p.skills, 'Skills to build')}
-          ${section(p.projects, 'Personal projects')}
-          ${section(p.nyc, 'NYC opportunities')}
+        <div class="phase-body ${isOpen?'open':''}" id="body-${p.id}">
+          ${section(p.skills, 'Skills to build', p.color)}
+          ${section(p.projects, 'Personal projects', p.color)}
+          ${section(p.nyc, 'NYC opportunities', p.color)}
           <div class="notes-wrap">
             <div class="notes-label">Notes &amp; reflections</div>
-            <textarea class="notes" id="notes-${p.id}" placeholder="Jot down links, progress, ideas, wins...">${state.notes[p.id] || ''}</textarea>
+            <textarea class="notes" id="notes-${p.id}" placeholder="Jot down links, progress, ideas...">${state.notes[p.id]||''}</textarea>
             <div class="notes-footer">
               <button class="save-btn" onclick="saveNotes('${p.id}')">Save notes</button>
               <span class="saved-hint" id="hint-${p.id}">✓ Saved</span>
@@ -838,7 +875,7 @@ function render() {
   updateStats();
 }
 
-function toggle(id) {
+function toggleMain(id) {
   state.checks[id] = !state.checks[id];
   const cb = document.getElementById('cb-' + id);
   const lbl = document.getElementById('lbl-' + id);
@@ -846,6 +883,114 @@ function toggle(id) {
   if (lbl) lbl.className = 'check-main' + (state.checks[id] ? ' done' : '');
   updateStats();
   saveState();
+  if (currentPanelId === id) updatePanelProgress(id);
+}
+
+function toggleStep(stepId, taskId) {
+  state.stepChecks[stepId] = !state.stepChecks[stepId];
+  const cb = document.getElementById('scb-' + stepId);
+  const lbl = document.getElementById('slbl-' + stepId);
+  if (cb) cb.checked = state.stepChecks[stepId];
+  if (lbl) lbl.className = 'step-main' + (state.stepChecks[stepId] ? ' done' : '');
+  saveState();
+  updatePanelProgress(taskId);
+  updateTaskMiniProgress(taskId);
+}
+
+function updatePanelProgress(taskId) {
+  const { done, total } = getStepsDone(taskId);
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  const fill = document.getElementById('panel-prog-fill');
+  const label = document.getElementById('panel-prog-label');
+  if (fill) fill.style.width = pct + '%';
+  if (label) label.textContent = done + ' / ' + total + ' steps';
+}
+
+function updateTaskMiniProgress(taskId) {
+  const { done, total } = getStepsDone(taskId);
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  const fill = document.getElementById('tpf-' + taskId);
+  const label = document.getElementById('tpl-' + taskId);
+  if (fill) fill.style.width = pct + '%';
+  if (label) label.textContent = done + '/' + total + ' steps';
+}
+
+function findPhaseForTask(taskId) {
+  for (const p of PHASES) {
+    const all = [...p.skills, ...p.projects, ...p.nyc];
+    if (all.find(i => i.id === taskId)) return p;
+  }
+  return null;
+}
+
+function findTaskById(taskId) {
+  for (const p of PHASES) {
+    const all = [...p.skills, ...p.projects, ...p.nyc];
+    const item = all.find(i => i.id === taskId);
+    if (item) return item;
+  }
+  return null;
+}
+
+function openPanel(taskId) {
+  const detail = TASK_DETAILS[taskId];
+  if (!detail) return;
+  const task = findTaskById(taskId);
+  const phase = findPhaseForTask(taskId);
+  if (!task || !phase) return;
+
+  currentPanelId = taskId;
+
+  document.getElementById('panel-phase-badge').textContent = phase.label;
+  document.getElementById('panel-phase-badge').style.color = phase.color;
+  document.getElementById('panel-title').textContent = task.text;
+  document.getElementById('panel-desc').textContent = detail.desc;
+
+  const { done, total } = getStepsDone(taskId);
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById('panel-prog-fill').style.width = pct + '%';
+  document.getElementById('panel-prog-label').textContent = done + ' / ' + total + ' steps';
+
+  let html = '';
+  html += '<p class="panel-section-label">Steps to complete</p>';
+  detail.steps.forEach(step => {
+    html += `
+      <div class="step-item">
+        <input type="checkbox" id="scb-${step.id}" ${state.stepChecks[step.id]?'checked':''} onchange="toggleStep('${step.id}','${taskId}')">
+        <div class="step-text">
+          <div class="step-main ${state.stepChecks[step.id]?'done':''}" id="slbl-${step.id}">${step.text}</div>
+          ${step.hint ? `<div class="step-hint">${step.hint}</div>` : ''}
+        </div>
+      </div>
+    `;
+  });
+
+  if (detail.resources && detail.resources.length) {
+    html += '<p class="panel-section-label">Resources</p>';
+    detail.resources.forEach(r => {
+      html += `<a class="panel-resource" href="${r.url}" target="_blank"><span>↗</span>${r.label}</a>`;
+    });
+  }
+
+  html += `
+    <div class="panel-main-check" onclick="toggleMain('${taskId}')">
+      <input type="checkbox" id="panel-main-cb" ${state.checks[taskId]?'checked':''} onchange="toggleMain('${taskId}')">
+      <span class="panel-main-check-label">Mark task as complete</span>
+    </div>
+  `;
+
+  document.getElementById('panel-body').innerHTML = html;
+
+  document.getElementById('overlay').classList.add('active');
+  document.getElementById('side-panel').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePanel() {
+  document.getElementById('overlay').classList.remove('active');
+  document.getElementById('side-panel').classList.remove('active');
+  document.body.style.overflow = '';
+  currentPanelId = null;
 }
 
 function togglePhase(id) {
@@ -863,6 +1008,8 @@ function saveNotes(id) {
   const hint = document.getElementById('hint-' + id);
   if (hint) { hint.style.opacity = '1'; setTimeout(() => hint.style.opacity = '0', 2000); }
 }
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
 
 loadState();
 render();
