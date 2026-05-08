@@ -1,0 +1,290 @@
+
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+.header { padding: 1.5rem 0 1rem; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 1.5rem; }
+.header-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.title { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+.subtitle { font-size: 13px; color: var(--color-text-secondary); margin: 0; }
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.stat { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px; }
+.stat-label { font-size: 11px; color: var(--color-text-tertiary); margin: 0 0 4px; }
+.stat-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0; }
+.phase-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); margin-bottom: 1rem; overflow: hidden; }
+.phase-header { display: flex; align-items: center; gap: 10px; padding: 1rem 1.25rem; cursor: pointer; user-select: none; }
+.phase-header:hover { background: var(--color-background-secondary); }
+.phase-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.phase-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin: 0; flex: 1; }
+.phase-progress { font-size: 12px; color: var(--color-text-secondary); white-space: nowrap; }
+.chevron { font-size: 16px; color: var(--color-text-tertiary); transition: transform 0.2s; }
+.phase-body { padding: 0 1.25rem 1.25rem; border-top: 0.5px solid var(--color-border-tertiary); }
+.section-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin: 1rem 0 8px; }
+.check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.check-item:last-child { border-bottom: none; }
+.check-item input[type=checkbox] { margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; cursor: pointer; accent-color: #1D9E75; }
+.check-label { font-size: 13px; color: var(--color-text-primary); line-height: 1.5; }
+.check-label.done { color: var(--color-text-tertiary); text-decoration: line-through; }
+.check-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 1px; }
+.progress-bar-wrap { height: 4px; background: var(--color-background-secondary); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.progress-bar { height: 100%; border-radius: 2px; background: #1D9E75; transition: width 0.3s; }
+.notes-area { width: 100%; margin-top: 8px; font-size: 13px; padding: 8px 10px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); color: var(--color-text-primary); resize: vertical; min-height: 70px; font-family: var(--font-sans); }
+.notes-area:focus { outline: none; border-color: var(--color-border-primary); }
+.save-btn { font-size: 12px; padding: 4px 12px; margin-top: 6px; cursor: pointer; }
+.saved-hint { font-size: 11px; color: var(--color-text-success); margin-left: 8px; opacity: 0; transition: opacity 0.3s; }
+.ask-btn { margin-top: 1rem; font-size: 13px; width: 100%; }
+.collapsed { display: none; }
+</style>
+
+<h2 class="sr-only">Interactive career tracker for reaching a role at Anthropic, with phase checklists and notes that persist across sessions.</h2>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <p class="title">Road to Anthropic</p>
+      <p class="subtitle">Software Engineer — Account Abuse &amp; Trust &amp; Safety</p>
+    </div>
+    <div style="font-size:12px;color:var(--color-text-tertiary);text-align:right;">Progress saves automatically</div>
+  </div>
+  <div class="progress-bar-wrap" style="margin-top:12px;">
+    <div class="progress-bar" id="overall-bar" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="stats-row">
+  <div class="stat"><p class="stat-label">Tasks done</p><p class="stat-val" id="stat-done">0</p></div>
+  <div class="stat"><p class="stat-label">Total tasks</p><p class="stat-val" id="stat-total">0</p></div>
+  <div class="stat"><p class="stat-label">Overall progress</p><p class="stat-val" id="stat-pct">0%</p></div>
+  <div class="stat"><p class="stat-label">Current phase</p><p class="stat-val" id="stat-phase" style="font-size:14px;">—</p></div>
+</div>
+
+<div id="phases-container"></div>
+
+<script>
+const PHASES = [
+  {
+    id: 'p1',
+    label: 'Months 1–6',
+    color: '#E6F1FB',
+    textColor: '#0C447C',
+    title: 'Foundation — get solid, fill gaps',
+    skills: [
+      { id: 's1', text: 'Get comfortable with Pandas & NumPy', sub: 'Complete at least one end-to-end data analysis project' },
+      { id: 's2', text: 'Master SQL window functions & CTEs', sub: 'Practice on LeetCode SQL or Mode Analytics' },
+      { id: 's3', text: 'Build solid Git habits', sub: 'PRs, code review, meaningful commit messages' },
+      { id: 's4', text: 'Learn REST API design & consumption', sub: 'Build or document a small API from scratch' },
+    ],
+    projects: [
+      { id: 'pr1', text: 'NYC Open Data anomaly detector', sub: 'Pull 311/permit data, find outliers, build a dashboard' },
+      { id: 'pr2', text: 'Reddit bot detector', sub: 'Use Reddit API to flag suspicious posting patterns' },
+    ],
+    nyc: [
+      { id: 'n1', text: 'Attend PyData NYC meetup', sub: 'pydata.org/nyc — quarterly events' },
+      { id: 'n2', text: 'Set up LinkedIn & start connecting with trust & safety engineers', sub: '' },
+    ]
+  },
+  {
+    id: 'p2',
+    label: 'Months 7–12',
+    color: '#E1F5EE',
+    textColor: '#085041',
+    title: 'Depth — ML basics & abuse patterns',
+    skills: [
+      { id: 's5', text: 'Learn ML fundamentals with scikit-learn', sub: 'Classification, precision/recall tradeoffs, class imbalance' },
+      { id: 's6', text: 'Understand feature engineering', sub: 'Especially behavioral/temporal features for fraud detection' },
+      { id: 's7', text: 'Learn Docker basics', sub: 'Containerize your projects so they run anywhere' },
+      { id: 's8', text: 'Get familiar with a monitoring tool', sub: 'Grafana (free) or Datadog trial — build one dashboard' },
+    ],
+    projects: [
+      { id: 'pr3', text: 'Fake review classifier', sub: 'Train a model on Yelp open dataset to flag suspicious reviews' },
+      { id: 'pr4', text: 'API abuse simulator', sub: 'Build a Flask API, simulate credential stuffing, build detection' },
+    ],
+    nyc: [
+      { id: 'n3', text: 'Attend an OWASP NY chapter meeting', sub: 'owasp.org/www-chapter-new-york-city' },
+      { id: 'n4', text: 'Check out Recurse Center events (free, open to public)', sub: 'recurse.com — great engineering community in NYC' },
+    ]
+  },
+  {
+    id: 'p3',
+    label: 'Months 13–18',
+    color: '#FAEEDA',
+    textColor: '#633806',
+    title: 'Specialization — end-to-end abuse systems',
+    skills: [
+      { id: 's9', text: 'Learn graph analysis with NetworkX', sub: 'Model account relationships, detect clusters' },
+      { id: 's10', text: 'Understand stream processing basics', sub: 'Kafka or Kinesis concepts — how real-time detection works' },
+      { id: 's11', text: 'Get deep on Postgres', sub: 'Indexes, explain plans, query optimization at scale' },
+      { id: 's12', text: 'Write your first root cause analysis (RCA)', sub: 'Document a real incident or a simulated one from your projects' },
+    ],
+    projects: [
+      { id: 'pr5', text: 'Account network graph', sub: 'Model fake account clusters via shared IPs, devices, referrals' },
+      { id: 'pr6', text: 'Trust & safety admin dashboard', sub: 'Flag queue, analyst notes, rule management UI — mirrors real tooling' },
+    ],
+    nyc: [
+      { id: 'n5', text: 'Find and attend a Trust & Safety Professionals Association event', sub: 'tspa.org — actual industry community' },
+      { id: 'n6', text: 'Start going to fintech meetups (Stripe, Coinbase, etc.)', sub: 'Meetup.com — search "fintech NYC"' },
+    ]
+  },
+  {
+    id: 'p4',
+    label: 'Months 19–24',
+    color: '#EEEDFE',
+    textColor: '#3C3489',
+    title: 'Positioning — make the pivot visible',
+    skills: [
+      { id: 's13', text: 'Study LLM abuse patterns', sub: 'Prompt injection, jailbreaks, misuse at scale — read Anthropic research' },
+      { id: 's14', text: 'Practice system design interviews', sub: 'Focus on fraud/abuse detection system design specifically' },
+      { id: 's15', text: 'Read Anthropic\'s research papers & blog posts', sub: 'anthropic.com/research — understand their mission deeply' },
+      { id: 's16', text: 'Polish your GitHub portfolio', sub: 'README files, clean code, deployed demos where possible' },
+    ],
+    projects: [
+      { id: 'pr7', text: 'LLM prompt injection detector', sub: 'Classifier that flags jailbreak attempts on an LLM API' },
+      { id: 'pr8', text: 'Publish 2–3 technical blog posts', sub: 'Write about your projects on Medium or Substack — recruiters read these' },
+    ],
+    nyc: [
+      { id: 'n7', text: 'Target NYC-based roles at Stripe, Coinbase, or similar as a pivot job', sub: 'These companies have serious abuse teams and are closer to Anthropic\'s level' },
+      { id: 'n8', text: 'Reach out to Anthropic engineers on LinkedIn', sub: 'Genuine, specific messages about their work — not just "can you refer me"' },
+    ]
+  }
+];
+
+const STORAGE_KEY = 'anthropic_tracker_v1';
+
+let state = { checks: {}, notes: {} };
+let openPhases = { p1: true, p2: false, p3: false, p4: false };
+
+async function loadState() {
+  try {
+    const result = await window.storage.get(STORAGE_KEY);
+    if (result && result.value) {
+      state = JSON.parse(result.value);
+    }
+  } catch(e) {}
+}
+
+async function saveState() {
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(state));
+  } catch(e) {}
+}
+
+function getAllItems() {
+  return PHASES.flatMap(p => [...p.skills, ...p.projects, ...p.nyc]);
+}
+
+function countDone() {
+  return getAllItems().filter(item => state.checks[item.id]).length;
+}
+
+function updateStats() {
+  const total = getAllItems().length;
+  const done = countDone();
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pct').textContent = pct + '%';
+  document.getElementById('overall-bar').style.width = pct + '%';
+
+  let currentPhase = 'Phase 1';
+  PHASES.forEach(p => {
+    const items = [...p.skills, ...p.projects, ...p.nyc];
+    const phaseDone = items.filter(i => state.checks[i.id]).length;
+    const phasePct = items.length > 0 ? phaseDone / items.length : 0;
+    if (phasePct >= 0.5) currentPhase = p.label;
+  });
+  document.getElementById('stat-phase').textContent = currentPhase;
+
+  PHASES.forEach(p => {
+    const items = [...p.skills, ...p.projects, ...p.nyc];
+    const phaseDone = items.filter(i => state.checks[i.id]).length;
+    const bar = document.getElementById('bar-' + p.id);
+    const prog = document.getElementById('prog-' + p.id);
+    if (bar) bar.style.width = (items.length > 0 ? Math.round(phaseDone/items.length*100) : 0) + '%';
+    if (prog) prog.textContent = phaseDone + '/' + items.length;
+  });
+}
+
+function renderSection(items, sectionLabel, phaseId) {
+  return `
+    <p class="section-label">${sectionLabel}</p>
+    ${items.map(item => `
+      <div class="check-item">
+        <input type="checkbox" id="chk-${item.id}" data-id="${item.id}" ${state.checks[item.id] ? 'checked' : ''} />
+        <div>
+          <label for="chk-${item.id}" class="check-label ${state.checks[item.id] ? 'done' : ''}">${item.text}</label>
+          ${item.sub ? `<p class="check-sub">${item.sub}</p>` : ''}
+        </div>
+      </div>
+    `).join('')}
+  `;
+}
+
+function renderPhases() {
+  const container = document.getElementById('phases-container');
+  container.innerHTML = PHASES.map(p => {
+    const items = [...p.skills, ...p.projects, ...p.nyc];
+    const done = items.filter(i => state.checks[i.id]).length;
+    const isOpen = openPhases[p.id];
+    return `
+      <div class="phase-card">
+        <div class="phase-header" onclick="togglePhase('${p.id}')">
+          <span class="phase-badge" style="background:${p.color};color:${p.textColor};">${p.label}</span>
+          <p class="phase-title">${p.title}</p>
+          <span class="phase-progress" id="prog-${p.id}">${done}/${items.length}</span>
+          <i class="ti ti-chevron-down chevron" id="chev-${p.id}" style="transform:rotate(${isOpen?'180deg':'0deg'})" aria-hidden="true"></i>
+        </div>
+        <div id="body-${p.id}" class="${isOpen ? '' : 'collapsed'}">
+          <div class="phase-body">
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" id="bar-${p.id}" style="width:${items.length>0?Math.round(done/items.length*100):0}%"></div>
+            </div>
+            ${renderSection(p.skills, 'Skills to build', p.id)}
+            ${renderSection(p.projects, 'Personal projects', p.id)}
+            ${renderSection(p.nyc, 'NYC opportunities', p.id)}
+            <p class="section-label" style="margin-top:1rem;">Notes</p>
+            <textarea class="notes-area" id="notes-${p.id}" placeholder="Jot down progress, links, ideas...">${state.notes[p.id] || ''}</textarea>
+            <div style="display:flex;align-items:center;">
+              <button class="save-btn" onclick="saveNotes('${p.id}')">Save notes</button>
+              <span class="saved-hint" id="hint-${p.id}"><i class="ti ti-check" aria-hidden="true"></i> Saved</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', async function() {
+      const id = this.dataset.id;
+      state.checks[id] = this.checked;
+      const label = this.parentElement.querySelector('.check-label');
+      if (label) label.className = 'check-label' + (this.checked ? ' done' : '');
+      updateStats();
+      await saveState();
+    });
+  });
+
+  updateStats();
+}
+
+function togglePhase(id) {
+  openPhases[id] = !openPhases[id];
+  const body = document.getElementById('body-' + id);
+  const chev = document.getElementById('chev-' + id);
+  if (body) body.className = openPhases[id] ? '' : 'collapsed';
+  if (chev) chev.style.transform = openPhases[id] ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+async function saveNotes(phaseId) {
+  const ta = document.getElementById('notes-' + phaseId);
+  if (ta) state.notes[phaseId] = ta.value;
+  await saveState();
+  const hint = document.getElementById('hint-' + phaseId);
+  if (hint) { hint.style.opacity = '1'; setTimeout(() => hint.style.opacity = '0', 1800); }
+}
+
+(async () => {
+  await loadState();
+  renderPhases();
+})();
+</script>
