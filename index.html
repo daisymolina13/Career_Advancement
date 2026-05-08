@@ -1,72 +1,651 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daisy's Road to Anthropic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; }
-body { margin: 0; }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-.header { padding: 1.5rem 0 1rem; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 1.5rem; }
-.header-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-.title { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
-.subtitle { font-size: 13px; color: var(--color-text-secondary); margin: 0; }
-.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
-.stat { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px; }
-.stat-label { font-size: 11px; color: var(--color-text-tertiary); margin: 0 0 4px; }
-.stat-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0; }
-.phase-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); margin-bottom: 1rem; overflow: hidden; }
-.phase-header { display: flex; align-items: center; gap: 10px; padding: 1rem 1.25rem; cursor: pointer; user-select: none; }
-.phase-header:hover { background: var(--color-background-secondary); }
-.phase-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
-.phase-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin: 0; flex: 1; }
-.phase-progress { font-size: 12px; color: var(--color-text-secondary); white-space: nowrap; }
-.chevron { font-size: 16px; color: var(--color-text-tertiary); transition: transform 0.2s; }
-.phase-body { padding: 0 1.25rem 1.25rem; border-top: 0.5px solid var(--color-border-tertiary); }
-.section-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin: 1rem 0 8px; }
-.check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
-.check-item:last-child { border-bottom: none; }
-.check-item input[type=checkbox] { margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; cursor: pointer; accent-color: #1D9E75; }
-.check-label { font-size: 13px; color: var(--color-text-primary); line-height: 1.5; }
-.check-label.done { color: var(--color-text-tertiary); text-decoration: line-through; }
-.check-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 1px; }
-.progress-bar-wrap { height: 4px; background: var(--color-background-secondary); border-radius: 2px; margin-top: 8px; overflow: hidden; }
-.progress-bar { height: 100%; border-radius: 2px; background: #1D9E75; transition: width 0.3s; }
-.notes-area { width: 100%; margin-top: 8px; font-size: 13px; padding: 8px 10px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); color: var(--color-text-primary); resize: vertical; min-height: 70px; font-family: var(--font-sans); }
-.notes-area:focus { outline: none; border-color: var(--color-border-primary); }
-.save-btn { font-size: 12px; padding: 4px 12px; margin-top: 6px; cursor: pointer; }
-.saved-hint { font-size: 11px; color: var(--color-text-success); margin-left: 8px; opacity: 0; transition: opacity 0.3s; }
-.ask-btn { margin-top: 1rem; font-size: 13px; width: 100%; }
-.collapsed { display: none; }
+  :root {
+    --green-deep: #1a3a2a;
+    --green-mid: #2d5a3d;
+    --green-soft: #4a7c59;
+    --green-mist: #a8c5a0;
+    --green-pale: #d4e8cc;
+    --green-fog: #eef5eb;
+    --cream: #faf7f0;
+    --petal-white: #fff9f0;
+    --daisy-yellow: #f5c842;
+    --daisy-gold: #e8a800;
+    --blush: #f2d4c8;
+    --sage: #8fa882;
+    --bark: #6b4f3a;
+    --text-dark: #1a2e1e;
+    --text-mid: #3d5c42;
+    --text-muted: #7a9478;
+    --border: rgba(74, 124, 89, 0.18);
+    --shadow: rgba(26, 58, 42, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Botanical background pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(168, 197, 160, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(212, 232, 204, 0.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(238, 245, 235, 0.3) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 3.5rem 0 2.5rem;
+    position: relative;
+  }
+
+  .hero-deco {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .petal-ring {
+    width: 64px;
+    height: 64px;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .petal-ring .petals {
+    animation: spin-slow 20s linear infinite;
+    transform-origin: center;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 600;
+    color: var(--green-deep);
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--green-soft);
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-mid);
+    max-width: 400px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  @media (max-width: 520px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .stat-card {
+    background: var(--petal-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--shadow);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    width: 40px;
+    height: 40px;
+    background: var(--green-fog);
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--green-deep);
+    font-weight: 600;
+  }
+
+  /* ── OVERALL PROGRESS ── */
+  .overall-progress {
+    background: var(--petal-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .progress-label span:first-child {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .progress-label span:last-child {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--green-soft);
+  }
+
+  .prog-track {
+    height: 8px;
+    background: var(--green-fog);
+    border-radius: 99px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .prog-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--green-soft), var(--green-mist));
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .prog-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    background: var(--daisy-yellow);
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(245, 200, 66, 0.3);
+  }
+
+  /* ── PHASE CARDS ── */
+  .phase-card {
+    background: var(--petal-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .phase-card:hover {
+    box-shadow: 0 6px 20px var(--shadow);
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1.1rem 1.5rem;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+  }
+
+  .phase-header:hover {
+    background: var(--green-fog);
+  }
+
+  .phase-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .phase-meta { flex: 1; min-width: 0; }
+
+  .phase-badge {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .phase-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--green-deep);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .phase-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .phase-count {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .phase-mini-bar {
+    width: 60px;
+    height: 4px;
+    background: var(--green-fog);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .phase-mini-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.5s ease;
+  }
+
+  .chevron {
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: transform 0.25s;
+  }
+
+  .phase-body {
+    border-top: 1px solid var(--border);
+    padding: 1.25rem 1.5rem 1.5rem;
+    display: none;
+  }
+
+  .phase-body.open { display: block; }
+
+  /* ── SECTIONS ── */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 1.25rem 0 0.6rem;
+  }
+
+  .section-head:first-child { margin-top: 0; }
+
+  .section-head span {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .section-head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── CHECK ITEMS ── */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  .check-item:hover { background: var(--green-fog); }
+
+  .check-item input[type=checkbox] {
+    appearance: none;
+    width: 17px;
+    height: 17px;
+    border: 1.5px solid var(--green-mist);
+    border-radius: 5px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    background: white;
+  }
+
+  .check-item input[type=checkbox]:checked {
+    background: var(--green-soft);
+    border-color: var(--green-soft);
+  }
+
+  .check-item input[type=checkbox]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid white;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+  }
+
+  .check-text { flex: 1; }
+
+  .check-main {
+    font-size: 13px;
+    color: var(--text-dark);
+    line-height: 1.5;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+
+  .check-main.done {
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+
+  .check-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 1px;
+    line-height: 1.5;
+  }
+
+  /* ── NOTES ── */
+  .notes-wrap { margin-top: 1.25rem; }
+
+  .notes-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  textarea.notes {
+    width: 100%;
+    min-height: 72px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--green-fog);
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    line-height: 1.6;
+  }
+
+  textarea.notes:focus {
+    border-color: var(--green-soft);
+    box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
+  }
+
+  .notes-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .save-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 99px;
+    border: 1px solid var(--green-soft);
+    color: var(--green-soft);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+
+  .save-btn:hover {
+    background: var(--green-soft);
+    color: white;
+  }
+
+  .saved-hint {
+    font-size: 11px;
+    color: var(--green-soft);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-flower {
+    margin-bottom: 0.75rem;
+  }
+
+  .footer p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .phase-card:nth-child(1) { animation-delay: 0.1s; }
+  .phase-card:nth-child(2) { animation-delay: 0.2s; }
+  .phase-card:nth-child(3) { animation-delay: 0.3s; }
+  .phase-card:nth-child(4) { animation-delay: 0.4s; }
+
+  /* ── LEAF DECO ── */
+  .leaf-deco {
+    position: fixed;
+    pointer-events: none;
+    opacity: 0.07;
+    z-index: 0;
+  }
+
+  .leaf-deco.tl { top: -20px; left: -30px; transform: rotate(25deg); }
+  .leaf-deco.br { bottom: 60px; right: -40px; transform: rotate(-20deg) scaleX(-1); }
 </style>
+</head>
+<body>
 
-<h2 class="sr-only">Interactive career tracker for reaching a role at Anthropic, with phase checklists and notes that persist across sessions.</h2>
+<!-- Decorative leaves -->
+<svg class="leaf-deco tl" width="220" height="220" viewBox="0 0 220 220">
+  <path d="M20 200 Q60 40 200 20 Q180 100 120 140 Q80 165 20 200Z" fill="#2d5a3d"/>
+  <path d="M20 200 Q110 110 200 20" stroke="#2d5a3d" stroke-width="2" fill="none"/>
+  <path d="M20 200 Q80 120 160 60" stroke="#2d5a3d" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M20 200 Q60 130 120 90" stroke="#2d5a3d" stroke-width="1" fill="none" opacity="0.5"/>
+</svg>
+<svg class="leaf-deco br" width="280" height="280" viewBox="0 0 280 280">
+  <path d="M20 260 Q80 40 260 20 Q230 120 155 170 Q100 205 20 260Z" fill="#2d5a3d"/>
+  <path d="M20 260 Q140 130 260 20" stroke="#2d5a3d" stroke-width="2" fill="none"/>
+</svg>
 
-<div class="header">
-  <div class="header-top">
-    <div>
-      <p class="title">Road to Anthropic</p>
-      <p class="subtitle">Software Engineer — Account Abuse &amp; Trust &amp; Safety</p>
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-deco">
+      <svg class="petal-ring" viewBox="0 0 64 64">
+        <g class="petals" transform-origin="32 32">
+          <ellipse cx="32" cy="12" rx="5" ry="10" fill="#f5c842" opacity="0.9"/>
+          <ellipse cx="32" cy="12" rx="5" ry="10" fill="#f5c842" opacity="0.9" transform="rotate(45 32 32)"/>
+          <ellipse cx="32" cy="12" rx="5" ry="10" fill="#f5c842" opacity="0.9" transform="rotate(90 32 32)"/>
+          <ellipse cx="32" cy="12" rx="5" ry="10" fill="#f5c842" opacity="0.9" transform="rotate(135 32 32)"/>
+          <ellipse cx="32" cy="12" rx="5" ry="10" fill="#f5c842" opacity="0.85" transform="rotate(180 32 32)"/>
+          <ellipse cx="32" cy="12" rx="5" ry="10" fill="#f5c842" opacity="0.85" transform="rotate(225 32 32)"/>
+          <ellipse cx="32" cy="12" rx="5" ry="10" fill="#f5c842" opacity="0.85" transform="rotate(270 32 32)"/>
+          <ellipse cx="32" cy="12" rx="5" ry="10" fill="#f5c842" opacity="0.85" transform="rotate(315 32 32)"/>
+        </g>
+        <circle cx="32" cy="32" r="8" fill="#e8a800"/>
+        <circle cx="32" cy="32" r="5" fill="#f5c842"/>
+      </svg>
     </div>
-    <div style="font-size:12px;color:var(--color-text-tertiary);text-align:right;">Progress saves automatically</div>
-  </div>
-  <div class="progress-bar-wrap" style="margin-top:12px;">
-    <div class="progress-bar" id="overall-bar" style="width:0%"></div>
-  </div>
-</div>
+    <h1>Daisy's <em>Road to</em> Anthropic</h1>
+    <p class="hero-sub">Software Engineer — Account Abuse &amp; Trust &amp; Safety</p>
+    <p class="hero-tagline">"Every flower blooms in its own time. Every skill builds toward something greater."</p>
+  </header>
 
-<div class="stats-row">
-  <div class="stat"><p class="stat-label">Tasks done</p><p class="stat-val" id="stat-done">0</p></div>
-  <div class="stat"><p class="stat-label">Total tasks</p><p class="stat-val" id="stat-total">0</p></div>
-  <div class="stat"><p class="stat-label">Overall progress</p><p class="stat-val" id="stat-pct">0%</p></div>
-  <div class="stat"><p class="stat-label">Current phase</p><p class="stat-val" id="stat-phase" style="font-size:14px;">—</p></div>
-</div>
+  <!-- STATS -->
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Tasks done</div>
+      <div class="stat-val" id="stat-done">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total tasks</div>
+      <div class="stat-val" id="stat-total">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Progress</div>
+      <div class="stat-val" id="stat-pct">0%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Current phase</div>
+      <div class="stat-val" id="stat-phase" style="font-size:14px;margin-top:4px;">—</div>
+    </div>
+  </div>
 
-<div id="phases-container"></div>
+  <!-- OVERALL BAR -->
+  <div class="overall-progress">
+    <div class="progress-label">
+      <span>Overall growth</span>
+      <span id="prog-label-pct">0% in bloom</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="overall-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- PHASES -->
+  <div id="phases"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-flower">
+      <svg width="28" height="28" viewBox="0 0 28 28">
+        <g transform="translate(14,14)">
+          <ellipse cx="0" cy="-7" rx="3" ry="5.5" fill="#a8c5a0"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="5.5" fill="#a8c5a0" transform="rotate(60)"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="5.5" fill="#a8c5a0" transform="rotate(120)"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="5.5" fill="#a8c5a0" transform="rotate(180)"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="5.5" fill="#a8c5a0" transform="rotate(240)"/>
+          <ellipse cx="0" cy="-7" rx="3" ry="5.5" fill="#a8c5a0" transform="rotate(300)"/>
+        </g>
+        <circle cx="14" cy="14" r="4" fill="#f5c842"/>
+      </svg>
+    </div>
+    <p>Tended with care — one petal at a time.</p>
+  </footer>
+
+</div>
 
 <script>
 const PHASES = [
   {
     id: 'p1',
     label: 'Months 1–6',
-    color: '#E6F1FB',
-    textColor: '#0C447C',
+    icon: '🌱',
+    color: '#4a7c59',
+    barColor: '#4a7c59',
     title: 'Foundation — get solid, fill gaps',
     skills: [
       { id: 's1', text: 'Get comfortable with Pandas & NumPy', sub: 'Complete at least one end-to-end data analysis project' },
@@ -86,8 +665,9 @@ const PHASES = [
   {
     id: 'p2',
     label: 'Months 7–12',
-    color: '#E1F5EE',
-    textColor: '#085041',
+    icon: '🌿',
+    color: '#2d5a3d',
+    barColor: '#2d5a3d',
     title: 'Depth — ML basics & abuse patterns',
     skills: [
       { id: 's5', text: 'Learn ML fundamentals with scikit-learn', sub: 'Classification, precision/recall tradeoffs, class imbalance' },
@@ -107,8 +687,9 @@ const PHASES = [
   {
     id: 'p3',
     label: 'Months 13–18',
-    color: '#FAEEDA',
-    textColor: '#633806',
+    icon: '🌸',
+    color: '#8fa882',
+    barColor: '#8fa882',
     title: 'Specialization — end-to-end abuse systems',
     skills: [
       { id: 's9', text: 'Learn graph analysis with NetworkX', sub: 'Model account relationships, detect clusters' },
@@ -121,20 +702,21 @@ const PHASES = [
       { id: 'pr6', text: 'Trust & safety admin dashboard', sub: 'Flag queue, analyst notes, rule management UI — mirrors real tooling' },
     ],
     nyc: [
-      { id: 'n5', text: 'Find and attend a Trust & Safety Professionals Association event', sub: 'tspa.org — actual industry community' },
+      { id: 'n5', text: 'Attend a Trust & Safety Professionals Association event', sub: 'tspa.org — actual industry community' },
       { id: 'n6', text: 'Start going to fintech meetups (Stripe, Coinbase, etc.)', sub: 'Meetup.com — search "fintech NYC"' },
     ]
   },
   {
     id: 'p4',
     label: 'Months 19–24',
-    color: '#EEEDFE',
-    textColor: '#3C3489',
+    icon: '🌼',
+    color: '#e8a800',
+    barColor: '#e8a800',
     title: 'Positioning — make the pivot visible',
     skills: [
       { id: 's13', text: 'Study LLM abuse patterns', sub: 'Prompt injection, jailbreaks, misuse at scale — read Anthropic research' },
       { id: 's14', text: 'Practice system design interviews', sub: 'Focus on fraud/abuse detection system design specifically' },
-      { id: 's15', text: 'Read Anthropic\'s research papers & blog posts', sub: 'anthropic.com/research — understand their mission deeply' },
+      { id: 's15', text: "Read Anthropic's research papers & blog posts", sub: 'anthropic.com/research — understand their mission deeply' },
       { id: 's16', text: 'Polish your GitHub portfolio', sub: 'README files, clean code, deployed demos where possible' },
     ],
     projects: [
@@ -142,149 +724,148 @@ const PHASES = [
       { id: 'pr8', text: 'Publish 2–3 technical blog posts', sub: 'Write about your projects on Medium or Substack — recruiters read these' },
     ],
     nyc: [
-      { id: 'n7', text: 'Target NYC-based roles at Stripe, Coinbase, or similar as a pivot job', sub: 'These companies have serious abuse teams and are closer to Anthropic\'s level' },
+      { id: 'n7', text: 'Target NYC-based roles at Stripe, Coinbase, or similar', sub: 'These companies have serious abuse teams — great stepping stones' },
       { id: 'n8', text: 'Reach out to Anthropic engineers on LinkedIn', sub: 'Genuine, specific messages about their work — not just "can you refer me"' },
     ]
   }
 ];
 
-const STORAGE_KEY = 'anthropic_tracker_v1';
-
+const STORAGE_KEY = 'daisy_anthropic_tracker_v1';
 let state = { checks: {}, notes: {} };
 let openPhases = { p1: true, p2: false, p3: false, p4: false };
 
-async function loadState() {
+function loadState() {
   try {
-    const result = await window.storage.get(STORAGE_KEY);
-    if (result && result.value) {
-      state = JSON.parse(result.value);
-    }
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) state = JSON.parse(raw);
   } catch(e) {}
 }
 
-async function saveState() {
+function saveState() {
   try {
-    await window.storage.set(STORAGE_KEY, JSON.stringify(state));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch(e) {}
 }
 
-function getAllItems() {
+function allItems() {
   return PHASES.flatMap(p => [...p.skills, ...p.projects, ...p.nyc]);
 }
 
-function countDone() {
-  return getAllItems().filter(item => state.checks[item.id]).length;
-}
-
 function updateStats() {
-  const total = getAllItems().length;
-  const done = countDone();
+  const total = allItems().length;
+  const done = allItems().filter(i => state.checks[i.id]).length;
   const pct = total > 0 ? Math.round(done / total * 100) : 0;
+
   document.getElementById('stat-done').textContent = done;
   document.getElementById('stat-total').textContent = total;
   document.getElementById('stat-pct').textContent = pct + '%';
-  document.getElementById('overall-bar').style.width = pct + '%';
+  document.getElementById('overall-fill').style.width = pct + '%';
+  document.getElementById('prog-label-pct').textContent = pct + '% in bloom';
 
-  let currentPhase = 'Phase 1';
+  let phaseLabel = 'Sprouting';
   PHASES.forEach(p => {
     const items = [...p.skills, ...p.projects, ...p.nyc];
-    const phaseDone = items.filter(i => state.checks[i.id]).length;
-    const phasePct = items.length > 0 ? phaseDone / items.length : 0;
-    if (phasePct >= 0.5) currentPhase = p.label;
+    const pdone = items.filter(i => state.checks[i.id]).length;
+    if (pdone / items.length >= 0.5) phaseLabel = p.label;
   });
-  document.getElementById('stat-phase').textContent = currentPhase;
+  document.getElementById('stat-phase').textContent = phaseLabel;
 
   PHASES.forEach(p => {
     const items = [...p.skills, ...p.projects, ...p.nyc];
-    const phaseDone = items.filter(i => state.checks[i.id]).length;
-    const bar = document.getElementById('bar-' + p.id);
-    const prog = document.getElementById('prog-' + p.id);
-    if (bar) bar.style.width = (items.length > 0 ? Math.round(phaseDone/items.length*100) : 0) + '%';
-    if (prog) prog.textContent = phaseDone + '/' + items.length;
+    const pdone = items.filter(i => state.checks[i.id]).length;
+    const ppct = items.length > 0 ? Math.round(pdone / items.length * 100) : 0;
+    const fill = document.getElementById('fill-' + p.id);
+    const count = document.getElementById('count-' + p.id);
+    if (fill) fill.style.width = ppct + '%';
+    if (count) count.textContent = pdone + '/' + items.length;
   });
 }
 
-function renderSection(items, sectionLabel, phaseId) {
+function section(items, label) {
   return `
-    <p class="section-label">${sectionLabel}</p>
+    <div class="section-head"><span>${label}</span></div>
     ${items.map(item => `
-      <div class="check-item">
-        <input type="checkbox" id="chk-${item.id}" data-id="${item.id}" ${state.checks[item.id] ? 'checked' : ''} />
-        <div>
-          <label for="chk-${item.id}" class="check-label ${state.checks[item.id] ? 'done' : ''}">${item.text}</label>
-          ${item.sub ? `<p class="check-sub">${item.sub}</p>` : ''}
+      <div class="check-item" onclick="toggle('${item.id}')">
+        <input type="checkbox" id="cb-${item.id}" data-id="${item.id}" ${state.checks[item.id] ? 'checked' : ''} onclick="event.stopPropagation();toggle('${item.id}')">
+        <div class="check-text">
+          <div class="check-main ${state.checks[item.id] ? 'done' : ''}" id="lbl-${item.id}">${item.text}</div>
+          ${item.sub ? `<div class="check-sub">${item.sub}</div>` : ''}
         </div>
       </div>
     `).join('')}
   `;
 }
 
-function renderPhases() {
-  const container = document.getElementById('phases-container');
-  container.innerHTML = PHASES.map(p => {
+function render() {
+  const container = document.getElementById('phases');
+  container.innerHTML = PHASES.map((p, i) => {
     const items = [...p.skills, ...p.projects, ...p.nyc];
     const done = items.filter(i => state.checks[i.id]).length;
+    const pct = items.length > 0 ? Math.round(done / items.length * 100) : 0;
     const isOpen = openPhases[p.id];
     return `
-      <div class="phase-card">
+      <div class="phase-card" style="animation-delay:${0.1 + i * 0.08}s">
         <div class="phase-header" onclick="togglePhase('${p.id}')">
-          <span class="phase-badge" style="background:${p.color};color:${p.textColor};">${p.label}</span>
-          <p class="phase-title">${p.title}</p>
-          <span class="phase-progress" id="prog-${p.id}">${done}/${items.length}</span>
-          <i class="ti ti-chevron-down chevron" id="chev-${p.id}" style="transform:rotate(${isOpen?'180deg':'0deg'})" aria-hidden="true"></i>
-        </div>
-        <div id="body-${p.id}" class="${isOpen ? '' : 'collapsed'}">
-          <div class="phase-body">
-            <div class="progress-bar-wrap">
-              <div class="progress-bar" id="bar-${p.id}" style="width:${items.length>0?Math.round(done/items.length*100):0}%"></div>
+          <div class="phase-icon" style="background:${p.color}22;">${p.icon}</div>
+          <div class="phase-meta">
+            <div class="phase-badge" style="color:${p.color}">${p.label}</div>
+            <div class="phase-title">${p.title}</div>
+          </div>
+          <div class="phase-right">
+            <span class="phase-count" id="count-${p.id}">${done}/${items.length}</span>
+            <div class="phase-mini-bar">
+              <div class="phase-mini-fill" id="fill-${p.id}" style="width:${pct}%;background:${p.barColor}"></div>
             </div>
-            ${renderSection(p.skills, 'Skills to build', p.id)}
-            ${renderSection(p.projects, 'Personal projects', p.id)}
-            ${renderSection(p.nyc, 'NYC opportunities', p.id)}
-            <p class="section-label" style="margin-top:1rem;">Notes</p>
-            <textarea class="notes-area" id="notes-${p.id}" placeholder="Jot down progress, links, ideas...">${state.notes[p.id] || ''}</textarea>
-            <div style="display:flex;align-items:center;">
+            <span class="chevron" id="chev-${p.id}" style="transform:rotate(${isOpen?'180deg':'0deg'})">▾</span>
+          </div>
+        </div>
+        <div class="phase-body ${isOpen ? 'open' : ''}" id="body-${p.id}">
+          ${section(p.skills, 'Skills to build')}
+          ${section(p.projects, 'Personal projects')}
+          ${section(p.nyc, 'NYC opportunities')}
+          <div class="notes-wrap">
+            <div class="notes-label">Notes &amp; reflections</div>
+            <textarea class="notes" id="notes-${p.id}" placeholder="Jot down links, progress, ideas, wins...">${state.notes[p.id] || ''}</textarea>
+            <div class="notes-footer">
               <button class="save-btn" onclick="saveNotes('${p.id}')">Save notes</button>
-              <span class="saved-hint" id="hint-${p.id}"><i class="ti ti-check" aria-hidden="true"></i> Saved</span>
+              <span class="saved-hint" id="hint-${p.id}">✓ Saved</span>
             </div>
           </div>
         </div>
       </div>
     `;
   }).join('');
-
-  container.querySelectorAll('input[type=checkbox]').forEach(cb => {
-    cb.addEventListener('change', async function() {
-      const id = this.dataset.id;
-      state.checks[id] = this.checked;
-      const label = this.parentElement.querySelector('.check-label');
-      if (label) label.className = 'check-label' + (this.checked ? ' done' : '');
-      updateStats();
-      await saveState();
-    });
-  });
-
   updateStats();
+}
+
+function toggle(id) {
+  state.checks[id] = !state.checks[id];
+  const cb = document.getElementById('cb-' + id);
+  const lbl = document.getElementById('lbl-' + id);
+  if (cb) cb.checked = state.checks[id];
+  if (lbl) lbl.className = 'check-main' + (state.checks[id] ? ' done' : '');
+  updateStats();
+  saveState();
 }
 
 function togglePhase(id) {
   openPhases[id] = !openPhases[id];
   const body = document.getElementById('body-' + id);
   const chev = document.getElementById('chev-' + id);
-  if (body) body.className = openPhases[id] ? '' : 'collapsed';
+  if (body) body.className = 'phase-body ' + (openPhases[id] ? 'open' : '');
   if (chev) chev.style.transform = openPhases[id] ? 'rotate(180deg)' : 'rotate(0deg)';
 }
 
-async function saveNotes(phaseId) {
-  const ta = document.getElementById('notes-' + phaseId);
-  if (ta) state.notes[phaseId] = ta.value;
-  await saveState();
-  const hint = document.getElementById('hint-' + phaseId);
-  if (hint) { hint.style.opacity = '1'; setTimeout(() => hint.style.opacity = '0', 1800); }
+function saveNotes(id) {
+  const ta = document.getElementById('notes-' + id);
+  if (ta) state.notes[id] = ta.value;
+  saveState();
+  const hint = document.getElementById('hint-' + id);
+  if (hint) { hint.style.opacity = '1'; setTimeout(() => hint.style.opacity = '0', 2000); }
 }
 
-(async () => {
-  await loadState();
-  renderPhases();
-})();
+loadState();
+render();
 </script>
+</body>
+</html>
